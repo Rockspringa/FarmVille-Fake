@@ -1,3 +1,9 @@
+package com.FVF.objetos.suelos;
+
+import com.FVF.objetos.*;
+import com.FVF.objetos.actividades.*;
+
+
 public class Grama extends Suelo {
     public static final double DISTRIBUCION = 0.4;
     private static double distrActual = 0;

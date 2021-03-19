@@ -1,3 +1,5 @@
+package com.FVF.objetos;
+
 public abstract class Actividad {
     private static final int precio = 10;
     
