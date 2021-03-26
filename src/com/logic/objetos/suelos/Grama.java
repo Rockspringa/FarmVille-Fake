@@ -1,7 +1,7 @@
-package com.FVF.objetos.suelos;
+package com.logic.objetos.suelos;
 
-import com.FVF.objetos.*;
-import com.FVF.objetos.actividades.*;
+import com.logic.objetos.*;
+import com.logic.objetos.actividades.*;
 
 
 public class Grama extends Suelo {

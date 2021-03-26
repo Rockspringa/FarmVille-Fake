@@ -1,4 +1,4 @@
-package com.FVF.objetos;
+package com.logic.objetos;
 
 public abstract class Suelo {
     private static int cantSuelos = 0;

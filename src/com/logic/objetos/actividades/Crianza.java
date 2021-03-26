@@ -1,6 +1,6 @@
-package com.FVF.objetos.actividades;
+package com.logic.objetos.actividades;
 
-import com.FVF.objetos.*;
+import com.logic.objetos.*;
 
 
 public class Crianza extends Actividad {

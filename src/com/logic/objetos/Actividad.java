@@ -1,4 +1,4 @@
-package com.FVF.objetos;
+package com.logic.objetos;
 
 public abstract class Actividad {
     private static final int precio = 10;
