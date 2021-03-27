@@ -1,10 +1,9 @@
 package com.exec;
 
+import javax.swing.ImageIcon;
 import com.gui.frames.*;
-import java.awt.Color;
-import com.logic.objetos.Suelo;
+import com.logic.objetos.*;
 import com.logic.objetos.suelos.*;
-import com.logic.objetos.Granjero;
 
 public class Granja {
     private static Suelo[][] parcelas;
@@ -12,31 +11,65 @@ public class Granja {
 
     public static void main(String[] args) {
         new Login().seeIt();
-        inciarParcela();
     }
 
-    public static Color getJParcela(int m, int n) {
-        return (parcelas[m][n] instanceof Grama)
-                ? Color.GREEN
-                : (parcelas[m][n] instanceof Agua)
-                    ? Color.BLUE
-                    : Color.YELLOW;
+    public static ImageIcon getJParcela(int m, int n) {
+        return parcelas[m][n].getImage();
     }
 
-    public static void inciarParcela() {
+    public static void iniciarParcela() {
         if (parcelas == null) {
             parcelas = new Suelo[5][5];
             for (int m = 0; m < 5; m++) {
                 for (int n = 0; n < 5; n++) {
-                    parcelas[m][n] = new Grama();
+                    parcelas[m][n] = parcelaAleatoria();
                 }
             }
+        } else {
+            parcelas = null;
+            iniciarParcela();
         }
     }
 
-    public static void parcelaAleatoria() {
-        int[] coord = lugarVacio();
-        parcelas[coord[0]][coord[1]] = new Grama();
+    public static void newParcela() {
+        int[] posXY = lugarVacio();
+        parcelas[posXY[0]][posXY[1]] = parcelaAleatoria();
+    }
+
+    private static Suelo parcelaAleatoria() {
+        Suelo newParcela;
+        int rnd;
+        boolean DesieDist = Desierto.lessThanNecessary();
+        boolean GramaDist = Grama.lessThanNecessary();
+        boolean AguaDist = Agua.lessThanNecessary();
+
+        if (GramaDist && AguaDist && DesieDist)
+            rnd = (int) (Math.random() * 3);
+
+        else if (GramaDist && AguaDist)
+            rnd = (int) (Math.random() * 2);
+            
+        else if (GramaDist && DesieDist) {
+            rnd = (int) (Math.random() * 2);
+            if (rnd == 1)
+                rnd = 2;
+        } else if (AguaDist && DesieDist)
+            rnd = (int) (Math.random() * 2 + 1);
+
+        else if (GramaDist)
+            rnd = 0;
+
+        else if (AguaDist)
+            rnd = 1;
+
+        else
+            rnd = 2;
+
+        newParcela = (rnd == 0) ? new Grama()
+                        : (rnd == 1) ? new Agua()
+                            : new Desierto();
+        
+        return newParcela;
     }
 
     private static int[] lugarVacio() {

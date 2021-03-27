@@ -1,5 +1,7 @@
 package com.logic.objetos;
 
+import javax.swing.ImageIcon;
+
 public abstract class Suelo {
     private static int cantSuelos = 0;
     private static final int precio = 10;
@@ -12,9 +14,11 @@ public abstract class Suelo {
         return precio;
     }
 
-    public int getCantSuelos() {
-        return cantSuelos;
+    public static int getCantSuelos() {
+        return Suelo.cantSuelos;
     }
+
+    public abstract ImageIcon getImage();
 
     public abstract boolean sePuedeHacer(Actividad act);
     

@@ -1,10 +1,10 @@
 package com.gui.frames;
 
 import java.awt.event.*;
-import com.exec.Granja;
 import javax.swing.*;
-import com.gui.Frame;
 
+import com.exec.Granja;
+import com.gui.Frame;
 
 public class Juego extends Frame {
     private JLabel[][] parcelas;
@@ -12,6 +12,7 @@ public class Juego extends Frame {
     public Juego() {
         super("FarmFake");
 
+        Granja.iniciarParcela();
         parcelas = new JLabel[5][5];
         int width = 105;
         int height = 98;
@@ -20,8 +21,7 @@ public class Juego extends Frame {
         
         for (int m = 0; m < 5; m++) {
             for (int n = 0; n < 5; n++) {
-                parcelas[m][n] = new JLabel();
-                parcelas[m][n].setBackground(Granja.getJParcela(m, n));
+                parcelas[m][n] = new JLabel(Granja.getJParcela(m, n));
                 parcelas[m][n].setVerticalAlignment(SwingConstants.CENTER);
                 parcelas[m][n].setHorizontalAlignment(SwingConstants.CENTER);
                 parcelas[m][n].setOpaque(true);
