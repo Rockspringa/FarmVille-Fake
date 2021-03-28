@@ -1,12 +1,15 @@
 package com.gui;
 
 import javax.swing.*;
+
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.*;
 
 
 public abstract class Frame extends JFrame implements ActionListener {
     private int width = 600;
-    private int height = 600;
+    private int height = 620;
 
     private void begin() {
         this.setLayout(null);

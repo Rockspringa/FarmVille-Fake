@@ -48,8 +48,8 @@ public class Login extends Frame implements FocusListener {
         if (e.getSource() == btnCrear) {
             if (!nombreTxtF.getText().equals("") && !apodoTxtF.getText().equals("")) {
                 Granja.bob = new Granjero(nombreTxtF.getText(), apodoTxtF.getText());
-                new Juego().seeIt();
                 this.dispose();
+                new Juego().seeIt();
             }
         }
     }

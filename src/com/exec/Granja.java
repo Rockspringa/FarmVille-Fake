@@ -2,6 +2,7 @@ package com.exec;
 
 import javax.swing.ImageIcon;
 import com.gui.frames.*;
+import com.gui.images.Images;
 import com.logic.objetos.*;
 import com.logic.objetos.suelos.*;
 
@@ -14,7 +15,9 @@ public class Granja {
     }
 
     public static ImageIcon getJParcela(int m, int n) {
-        return parcelas[m][n].getImage();
+        return (parcelas[m][n] != null)
+                    ? parcelas[m][n].getImage()
+                    : Images.BLOQUEADO_IMAGE;
     }
 
     public static void iniciarParcela() {
@@ -31,9 +34,10 @@ public class Granja {
         }
     }
 
-    public static void newParcela() {
+    public static boolean newParcela() {
         int[] posXY = lugarVacio();
         parcelas[posXY[0]][posXY[1]] = parcelaAleatoria();
+        return (posXY[2] == 1) ? true : false;
     }
 
     private static Suelo parcelaAleatoria() {
@@ -75,13 +79,14 @@ public class Granja {
     private static int[] lugarVacio() {
         int maxRow = parcelas.length;
         int maxCol = parcelas[0].length;
-        int[] coordenadas = new int[2];
+        int[] coordenadas = new int[3];
 
         for (int m = 0; m < maxRow; m++) {
             for (int n = 0; n < maxCol; n++) {
                 if (parcelas[m][n] == null) {
                     coordenadas[0] = m;
                     coordenadas[1] = n;
+                    coordenadas[2] = 0;
                     return coordenadas;
                 }
             }
@@ -96,7 +101,8 @@ public class Granja {
 
         parcelas = arrAux;
         coordenadas[0] = 0;
-        coordenadas[1] = maxCol + 1;
+        coordenadas[1] = maxCol;
+        coordenadas[2] = 1;
 
         return coordenadas;
     }

@@ -4,8 +4,8 @@ import javax.swing.ImageIcon;
 import java.awt.Image;
 
 public class Images {
-    private static final int width = 105;
-    private static final int height = 98;
+    private static final int width = 100;
+    private static final int height = 100;
 
     private static final ImageIcon GRAMA_ICON = new ImageIcon("src\\com\\gui\\images\\Grama.png");
     private static final Image GRAMA_IM_IC = GRAMA_ICON.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
@@ -19,5 +19,7 @@ public class Images {
     private static final Image DESIERTO_IM_IC = DESIERTO_ICON.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
     public static final ImageIcon DESIERTO_IMAGE = new ImageIcon(DESIERTO_IM_IC);
 
-    
+    private static final ImageIcon BLOQUEADO_ICON = new ImageIcon("src\\com\\gui\\images\\Bloqueado.png");
+    private static final Image BLOQUEADO_IM_IC = BLOQUEADO_ICON.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+    public static final ImageIcon BLOQUEADO_IMAGE = new ImageIcon(BLOQUEADO_IM_IC);
 }
