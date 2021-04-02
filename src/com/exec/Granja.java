@@ -1,12 +1,16 @@
 package com.exec;
 
 import javax.swing.ImageIcon;
+
+import com.gui.Frame;
 import com.gui.frames.*;
 import com.gui.images.Images;
 import com.logic.objetos.*;
 import com.logic.objetos.suelos.*;
+import com.logic.objetos.seres_vivos.*;
 
 public class Granja {
+    public static Frame ventanaPrincipal;
     private static Suelo[][] parcelas;
     public static Granjero bob;
 
@@ -41,38 +45,31 @@ public class Granja {
     }
 
     private static Suelo parcelaAleatoria() {
-        Suelo newParcela;
-        int rnd;
+        Suelo newParcela = null;
+        int rnd = (int) (Math.random() * 3);
+        int[] numSuelo = {0, 1, 2};
         boolean DesieDist = Desierto.lessThanNecessary();
         boolean GramaDist = Grama.lessThanNecessary();
         boolean AguaDist = Agua.lessThanNecessary();
 
-        if (GramaDist && AguaDist && DesieDist)
-            rnd = (int) (Math.random() * 3);
-
-        else if (GramaDist && AguaDist)
-            rnd = (int) (Math.random() * 2);
-            
-        else if (GramaDist && DesieDist) {
-            rnd = (int) (Math.random() * 2);
-            if (rnd == 1)
-                rnd = 2;
-        } else if (AguaDist && DesieDist)
-            rnd = (int) (Math.random() * 2 + 1);
-
-        else if (GramaDist)
-            rnd = 0;
-
-        else if (AguaDist)
-            rnd = 1;
-
-        else
-            rnd = 2;
-
-        newParcela = (rnd == 0) ? new Grama()
-                        : (rnd == 1) ? new Agua()
-                            : new Desierto();
-        
+        if (!GramaDist) {
+            numSuelo[0] = -1;
+        } if (!AguaDist) {
+            numSuelo[1] = -1;
+        } if (!DesieDist) {
+            numSuelo[2] = -1;
+        }
+        do {
+            if (numSuelo[rnd] == -1) {
+                rnd = (int) (Math.random() * 3);
+            } else if (numSuelo[rnd] == 0) {
+                newParcela = new Grama();
+            } else if (numSuelo[rnd] == 1) {
+                newParcela = new Agua();
+            } else {
+                newParcela = new Desierto();
+            }
+        } while (newParcela == null);
         return newParcela;
     }
 

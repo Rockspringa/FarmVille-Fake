@@ -13,7 +13,10 @@ public class Desierto extends Suelo{
     public Desierto() {
         super();
         cantDesierto++;
-        this.image = Images.DESIERTO_IMAGE;
+        int rndImg = (int) (Math.random() * 10);
+        this.image = (rndImg == 0) ? Images.DESIERTO_CACTUS_IMAGE
+                    : (rndImg == 1) ? Images.DESIERTO_CRANEO_IMAGE
+                                    : Images.DESIERTO_IMAGE;
     }
 
     @Override
@@ -32,7 +35,6 @@ public class Desierto extends Suelo{
         return (distrActual < DISTRIBUCION)
                 ? true : false;
     }
-
 
     public static double getDistribucion() {
         return distrActual;

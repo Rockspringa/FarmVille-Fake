@@ -1,13 +1,12 @@
 package com.gui.frames;
 
-import javax.swing.JButton;
-
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.*;
+
 import com.gui.Frame;
 import com.exec.Granja;
-import java.awt.event.*;
-import com.logic.objetos.Granjero;
+import com.logic.objetos.seres_vivos.*;
 
 
 public class Login extends Frame implements FocusListener {
@@ -49,7 +48,8 @@ public class Login extends Frame implements FocusListener {
             if (!nombreTxtF.getText().equals("") && !apodoTxtF.getText().equals("")) {
                 Granja.bob = new Granjero(nombreTxtF.getText(), apodoTxtF.getText());
                 this.dispose();
-                new Juego().seeIt();
+                Granja.ventanaPrincipal = new Principal();
+                Granja.ventanaPrincipal.seeIt();
             }
         }
     }

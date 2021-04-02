@@ -1,8 +1,12 @@
-package com.logic.objetos;
+package com.logic.objetos.seres_vivos;
+
+import com.logic.objetos.*;
 
 public class Granjero {
     private final String nombre;
     private final String apodo;
+    private Producto[] bodega;
+    private int cantProductos;
     private boolean vivo;
     private int vida;
     private int oro;
@@ -10,12 +14,27 @@ public class Granjero {
     public Granjero(String nombre, String apodo) {
         this.nombre = nombre;
         this.apodo = apodo;
+        this.bodega = new Producto[10];
+        this.cantProductos = 0;
+    }
+
+    public void addProducto(Producto producto) {
+        if (cantProductos < this.bodega.length)
+            this.bodega[cantProductos++] = producto;
+        else {
+            Producto[] auxArr = new Producto[cantProductos + 10];
+            for (int x = 0; x < this.bodega.length; x++) {
+                auxArr[x] = this.bodega[x];
+            }
+            this.bodega = auxArr;
+            this.addProducto(producto);
+        }
     }
 
     public void newGame() {
         if (this.vivo == false) {
             this.vivo = true;
-            this.setVida(10);
+            this.vida = 20;
             this.setOro(100);
         }
     }
@@ -37,13 +56,13 @@ public class Granjero {
         return this.vida;
     }
 
-    public void setVida(int vida) {
+    public void bajarVida() {
         if (vida <= 0) {
             this.vida = 0;
             this.vivo = false;
             this.setOro(this.getOro());
         } else {
-            this.vida = vida;
+            this.vida--;
         }
     }
 

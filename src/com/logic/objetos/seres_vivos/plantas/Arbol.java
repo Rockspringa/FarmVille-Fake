@@ -1,6 +1,6 @@
-package com.logic.objetos.plantas;
+package com.logic.objetos.seres_vivos.plantas;
 
-import com.logic.objetos.Planta;
+import com.logic.objetos.seres_vivos.Planta;
 import com.logic.objetos.Producto;
 
 

@@ -1,4 +1,6 @@
-package com.logic.objetos;
+package com.logic.objetos.seres_vivos;
+
+import com.logic.objetos.*;
 
 public abstract class Planta {
     private final int cantSemillas;

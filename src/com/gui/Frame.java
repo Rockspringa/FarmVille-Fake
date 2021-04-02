@@ -1,9 +1,6 @@
 package com.gui;
 
 import javax.swing.*;
-
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.*;
 
 
@@ -13,8 +10,9 @@ public abstract class Frame extends JFrame implements ActionListener {
 
     private void begin() {
         this.setLayout(null);
+        this.setResizable(false);
         this.setBounds(0, 0, this.width, this.height);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public Frame(String header) {
