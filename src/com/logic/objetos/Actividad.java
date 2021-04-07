@@ -1,15 +1,38 @@
 package com.logic.objetos;
 
+import javax.swing.ImageIcon;
+
+import com.logic.objetos.seres_vivos.Granjero;
+
 public abstract class Actividad {
-    private static final int precio = 10;
-    
-    public int getPrecio() {
-        return precio;
+    private final Suelo[] area;
+
+    public Actividad(Suelo[] area) {
+        this.area = area;
+    }
+
+    public Suelo[] getArea() {
+        return this.area;
     }
 
     public boolean sePuede(Suelo suelo) {
         return suelo.sePuedeHacer(this);
     }
 
-    public abstract void realizarActividad(Suelo suelo);
+    public void limpiarCuerpo(Granjero bob) {
+        if (bob.isEnough(10)) {
+            bob.setOro(10);
+            for (Suelo parcela : area) {
+                parcela.setActividad(null);
+            }
+        }
+    }
+
+    public abstract void pasoTiempo();
+
+    public abstract void realizarActividad();
+
+    public abstract void terminarActividad(Granjero bob);
+
+    public abstract ImageIcon getImage();
 }

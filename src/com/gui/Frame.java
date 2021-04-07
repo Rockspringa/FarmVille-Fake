@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 public abstract class Frame extends JFrame implements ActionListener {
     private int width = 600;
-    private int height = 620;
+    private int height = 635;
 
     private void begin() {
         this.setLayout(null);

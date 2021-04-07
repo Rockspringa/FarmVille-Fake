@@ -1,22 +1,26 @@
 package com.logic.hilos;
 
 import com.exec.Granja;
-import com.gui.Frame;
 import com.gui.frames.Juego;
 
 public class Verdugo extends Thread {
+    public Verdugo() {}
+    
     @Override
     public void run() {
-        Frame juego = new Juego();
+        Juego juego = new Juego();
         Granja.bob.newGame();
         juego.seeIt();
+        new MatarTiempo().start();
+
         while (Granja.bob.isAlive()) {
-            Granja.bob.bajarVida();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
                 e.getMessage();
             }
+            Granja.bob.bajarVida();
+            juego.bajoVida();
         }
         juego.dispose();
         Granja.ventanaPrincipal.setVisible(true);

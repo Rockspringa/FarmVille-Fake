@@ -7,7 +7,7 @@ import javax.swing.*;
 import com.exec.Granja;
 import com.gui.Frame;
 import com.gui.images.Images;
-import com.logic.hilos.Verdugo;
+import com.logic.hilos.*;
 
 public class Principal extends Frame {
     private JLabel granjero;

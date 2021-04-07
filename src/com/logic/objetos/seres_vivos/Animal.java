@@ -9,23 +9,41 @@ public class Animal implements SerVivo {
     private final boolean productor;
     private final boolean omnivoro;
     private final Producto produce;
-    private final int numParcelas;
+    private final double numParcelas;
+    private final String nombre;
     private boolean vivo;
     private int vida;
 
-    public Animal(int numParcelas, boolean esOmnivoro, boolean esProductor,
+    public Animal(String nombre, double numParcelas, boolean esOmnivoro, boolean esProductor,
                         boolean esDestazable, Producto produce) {
         this.numParcelas = numParcelas;
-        this.omnivoro = esOmnivoro;
-        this.productor = esProductor;
         this.destazable = esDestazable;
+        this.productor = esProductor;
+        this.omnivoro = esOmnivoro;
         this.produce = produce;
+        this.nombre = nombre;
         this.vivo = true;
         this.vida = 100;
     }
 
+    public String getNombre() {
+        return this.nombre;
+    }
+
+    public double getNumParcelas() {
+        return numParcelas;
+    }
+
     public int getVida() {
         return this.vida;
+    }
+
+    @Override
+    public void bajarVida() {
+        this.vida--;
+        if (vida <= 0) {
+            this.morir();
+        }
     }
 
     public boolean isAlive() {

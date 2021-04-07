@@ -5,17 +5,49 @@ import javax.swing.ImageIcon;
 import com.gui.Frame;
 import com.gui.frames.*;
 import com.gui.images.Images;
+import com.logic.array.Array;
 import com.logic.objetos.*;
 import com.logic.objetos.suelos.*;
 import com.logic.objetos.seres_vivos.*;
+import com.logic.objetos.seres_vivos.plantas.*;
 
 public class Granja {
     public static Frame ventanaPrincipal;
-    private static Suelo[][] parcelas;
     public static Granjero bob;
+    private static Suelo[][] parcelas;
+    private static Array<Planta> plantas;
+    private static Array<Animal> animales;
 
     public static void main(String[] args) {
+        Granja.plantas = new Array<Planta>();
+        Granja.animales = new Array<Animal>();
+        addCultivo("Maiz", 3, 3, 15, 10, 3, null);
+        addArbol("Manzano", 3, 5, 7, 25, 18, 4, null);
+        addAnimal("Vaca", 2, false, true, true, null);
+        addAnimal("Gallina", 0.5, false, true, true, null);
         new Login().seeIt();
+    }
+
+    public static void addCultivo(String name, int cantSemillas,int precioSemilla,
+                int deadline, int cosechaTime, int cantProdCosecha, Producto producto) {
+    
+        plantas.add(new Cultivo(name, cantSemillas, precioSemilla, deadline,
+                        cosechaTime, cantProdCosecha, producto));
+    }
+
+    public static void addArbol(String name, int cantCosechas, int cantSemillas,
+                            int precioSemilla, int deadline, int cosechaTime,
+                            int cantProdCosecha, Producto producto) {
+    
+        plantas.add(new Arbol(name, cantCosechas, cantSemillas, precioSemilla, deadline,
+                    cosechaTime, cantProdCosecha, producto));
+    }
+
+    public static void addAnimal(String name, double numParcelas, boolean esOmnivoro,
+                        boolean esProductor, boolean esDestazable, Producto produce) {
+        
+        animales.add(new Animal(name, numParcelas, esOmnivoro,
+                            esProductor, esDestazable, produce));
     }
 
     public static ImageIcon getJParcela(int m, int n) {
@@ -107,5 +139,37 @@ public class Granja {
     public static void murioBob() {
         if (!bob.isAlive())
             parcelas = null;
+    }
+
+    public static int getDimesions() {
+        return Granja.parcelas.length;
+    }
+    
+    public static Suelo[][] getParcelas() {
+        return Granja.parcelas;
+    }
+
+    public static void terminarActividad(int m, int n) {
+        if (parcelas[m][n] != null && parcelas[m][n].getActividad() != null) {
+            parcelas[m][n].getActividad().terminarActividad(bob);
+        }
+    }
+
+    public static void terminarActividad(int[] coord) {
+        Granja.terminarActividad(coord[0], coord[1]);
+    }
+
+    public static void terminarActividades(int[][] coordenadas) {
+        for (int[] coord : coordenadas) {
+            Granja.terminarActividad(coord);
+        }
+    }
+
+    public static Array<Animal> getAnimales() {
+        return Granja.animales;
+    }
+
+    public static Array<Planta> getPlantas() {
+        return Granja.plantas;
     }
 }

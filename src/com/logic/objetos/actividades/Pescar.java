@@ -6,7 +6,7 @@ import com.logic.objetos.*;
 public class Pescar extends Actividad {
     
     @Override
-    public void realizarActividad(Suelo suelo) {
+    public void realizarActividad() {
         System.out.println("Estoy pescando");
     }   
 }
