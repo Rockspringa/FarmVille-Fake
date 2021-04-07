@@ -1,5 +1,7 @@
 package com.logic.objetos.seres_vivos;
 
+import javax.swing.ImageIcon;
+
 import com.exec.Granja;
 import com.logic.objetos.*;
 import com.logic.objetos.productos.*;
@@ -11,6 +13,7 @@ public class Animal implements SerVivo {
     private final Producto produce;
     private final double numParcelas;
     private final String nombre;
+    private ImageIcon image;
     private boolean vivo;
     private int vida;
 
@@ -28,6 +31,14 @@ public class Animal implements SerVivo {
 
     public String getNombre() {
         return this.nombre;
+    }
+
+    public ImageIcon getImage() {
+        return image;
+    }
+
+    public void setImage(ImageIcon image) {
+        this.image = image;
     }
 
     public double getNumParcelas() {

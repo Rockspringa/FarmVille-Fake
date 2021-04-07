@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 
 import com.logic.objetos.*;
 import com.logic.objetos.seres_vivos.Animal;
+import com.logic.objetos.seres_vivos.Granjero;
 
 
 public class Crianza extends Actividad {
@@ -28,12 +29,19 @@ public class Crianza extends Actividad {
     }    
 
     @Override
-    public void terminarActividad() {
-        if ()
+    public ImageIcon getImage() {
+        return animal.getImage();
     }
 
     @Override
-    public ImageIcon getImage() {
-        return animal.getImage();
+    public void pasoTiempo() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void terminarActividad(Granjero bob) {
+        // TODO Auto-generated method stub
+        
     }
 }
