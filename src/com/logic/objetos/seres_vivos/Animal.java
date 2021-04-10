@@ -13,24 +13,32 @@ public class Animal implements SerVivo {
     private final Producto produce;
     private final double numParcelas;
     private final String nombre;
+    private final int precio;
     private ImageIcon image;
     private boolean vivo;
     private int vida;
 
-    public Animal(String nombre, double numParcelas, boolean esOmnivoro, boolean esProductor,
-                        boolean esDestazable, Producto produce) {
+    public Animal(String nombre, double numParcelas, int precio, boolean esOmnivoro,
+                        boolean esProductor, boolean esDestazable, Producto produce,
+                        ImageIcon image) {
         this.numParcelas = numParcelas;
         this.destazable = esDestazable;
         this.productor = esProductor;
         this.omnivoro = esOmnivoro;
         this.produce = produce;
         this.nombre = nombre;
+        this.precio = precio;
+        this.image = image;
         this.vivo = true;
         this.vida = 100;
     }
 
     public String getNombre() {
         return this.nombre;
+    }
+
+    public int getPrecio() {
+        return this.precio;
     }
 
     public ImageIcon getImage() {
@@ -61,15 +69,19 @@ public class Animal implements SerVivo {
         return this.vivo;
     }
 
-    public void alimentarse(Alimento comida) {
-        if (omnivoro && this.isAlive()) {
-            this.vida += (comida.isParaOmnivoro())
-                            ? comida.getVidaRecuperable()
-                            : 0;
-        } else if (!omnivoro && this.isAlive()) {
-            this.vida += (!comida.isParaOmnivoro())
-                            ? comida.getVidaRecuperable()
-                            : 0;
+    public void alimentarse(Producto comida) {
+        Alimento alm;
+        if (comida instanceof Alimento) {
+            alm = (Alimento) comida;
+            if (omnivoro && this.isAlive()) {
+                this.vida += (alm.isParaOmnivoro())
+                                ? alm.getVidaRecuperable()
+                                : 0;
+            } else if (!omnivoro && this.isAlive()) {
+                this.vida += (!alm.isParaOmnivoro())
+                                ? alm.getVidaRecuperable()
+                                : 0;
+            }
         }
     }
 

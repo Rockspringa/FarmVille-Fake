@@ -71,4 +71,10 @@ public class Granjero {
     public String getNombre() {
         return this.nombre;
     }
+
+    public void morir() {
+        this.vida = 0;
+        this.vivo = false;
+        this.setOro(this.getOro());
+    }
 }

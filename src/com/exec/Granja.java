@@ -23,8 +23,8 @@ public class Granja {
         Granja.animales = new Array<Animal>();
         addCultivo("Maiz", 3, 3, 15, 10, 3, null);
         addArbol("Manzano", 3, 5, 7, 25, 18, 4, null);
-        addAnimal("Vaca", 2, false, true, true, null);
-        addAnimal("Gallina", 0.5, false, true, true, null);
+        addAnimal("Vaca", 2, 10, false, true, true, null, Images.VACA_IMAGE);
+        addAnimal("Gallina", 0.5, 10, false, true, true, null, Images.GALLINA_IMAGE);
         new Login().seeIt();
     }
 
@@ -43,11 +43,12 @@ public class Granja {
                     cosechaTime, cantProdCosecha, producto));
     }
 
-    public static void addAnimal(String name, double numParcelas, boolean esOmnivoro,
-                        boolean esProductor, boolean esDestazable, Producto produce) {
+    public static void addAnimal(String name, double numParcelas, int precio,
+                        boolean esOmnivoro, boolean esProductor, boolean esDestazable,
+                        Producto produce, ImageIcon image) {
         
-        animales.add(new Animal(name, numParcelas, esOmnivoro,
-                            esProductor, esDestazable, produce));
+        animales.add(new Animal(name, numParcelas, precio, esOmnivoro,
+                            esProductor, esDestazable, produce, image));
     }
 
     public static ImageIcon getJParcela(int m, int n) {

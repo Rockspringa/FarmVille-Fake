@@ -2,7 +2,9 @@ package com.logic.objetos.seres_vivos;
 
 import javax.swing.ImageIcon;
 
-public abstract class Planta {
+import com.logic.objetos.*;
+
+public abstract class Planta implements SerVivo {
     private int tiempoVivo;
     private boolean alive;
     private ImageIcon image;
@@ -32,10 +34,17 @@ public abstract class Planta {
         this.precioSemilla = precioSemilla;
     }
 
-    public String getName() {
+    @Override
+    public String getNombre() {
         return this.name;
     }
 
+    @Override
+    public int getVida() {
+        return this.deadline - this.tiempoVivo;
+    }
+
+    @Override
     public void bajarVida() {
         this.tiempoVivo++;
         if (tiempoVivo > deadline) {
@@ -43,10 +52,12 @@ public abstract class Planta {
         }
     }
 
+    @Override
     public boolean isAlive() {
         return this.alive;
     }
 
+    @Override
     public ImageIcon getImage() {
         return this.image;
     }
@@ -77,7 +88,8 @@ public abstract class Planta {
         return cantSemillas;
     }
     
-    public int getPrecioSemilla() {
+    @Override
+    public int getPrecio() {
         return precioSemilla;
     }
 }

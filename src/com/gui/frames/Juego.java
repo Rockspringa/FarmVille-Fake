@@ -23,6 +23,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
     private JMenuBar bar;
     private JLabel[] vida;
     private JButton btnAgregar;
+    private JButton btnTienda;
     private boolean isSelecting = false;
     private JMenu[] submenuGrama;
     private Border normalBord;
@@ -31,8 +32,9 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
     private JLabel selected;
     private JPanel panelVida;
     private JMenu actividades;
-    private int widthPanel = 500;
-    private int heightPanel = 500;
+    private Tiega tiendaBodega;
+    private int widthPanel = 550;
+    private int heightPanel = 550;
     private int rowPanel = 5;
     private int colPanel = 5;
 
@@ -49,8 +51,8 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
         }
 
         this.parcelas = arrAux;
-        this.widthPanel += 100;
-        this.heightPanel += 100;
+        this.widthPanel += 110;
+        this.heightPanel += 110;
         this.rowPanel++;
         this.colPanel++;
 
@@ -95,7 +97,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
         /* Modifica el JPanel predeterminado del Frame. */
         super("FarmFake");
         JPanel window = (JPanel) (this.getContentPane());
-        window.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 2));
+        window.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 1));
         window.setAlignmentX(JPanel.LEFT_ALIGNMENT);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -105,15 +107,20 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
 
         this.btnAgregar = new JButton("Agregar parcela");
         this.btnAgregar.addActionListener(this);
-        this.bar.add(btnAgregar);
+        this.bar.add(this.btnAgregar);
+
+        this.btnTienda = new JButton("Abrir Mercado");
+        this.btnTienda.addActionListener(this);
+        this.bar.add(this.btnTienda);
 
         this.btnSelect = new JToggleButton("Seleccionar parcelas");
         this.btnSelect.addItemListener(this);
-        this.bar.add(btnSelect);
+        this.bar.add(this.btnSelect);
 
         this.actividades = new JMenu("Actividades");
         this.actividades.setVisible(false);
-        this.bar.add(actividades);
+        this.actividades.setOpaque(true);
+        this.bar.add(this.actividades);
 
         this.submenuGrama = new JMenu[2];
         this.submenuGrama[0] = new JMenu("Siembra");
@@ -129,9 +136,9 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
 
         /* Creacion de una especie de barra para mostrar la vida del granjero y el oro del mismo. */
         this.panelVida = new JPanel();
-        this.panelVida.setLayout(new FlowLayout());
-        this.panelVida.setAlignmentX(JPanel.TOP_ALIGNMENT);
-        this.panelVida.setPreferredSize(new Dimension(600, 40));
+        this.panelVida.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        this.panelVida.setAlignmentX(JPanel.LEFT_ALIGNMENT);
+        this.panelVida.setPreferredSize(new Dimension(440, 40));
         window.add(this.panelVida);
 
         /* Creacion de labels para la cantidad de vida. */
@@ -170,18 +177,30 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
         if (e.getSource() == btnAgregar) {
             if (Granja.newParcela()) {
                 if (rowPanel == 5)
-                    this.scrollable.setSize(widthPanel + 20, heightPanel + 20);
-                    this.scrollable.setPreferredSize(new Dimension(widthPanel + 20, heightPanel + 20));
+                    this.scrollable.setSize(widthPanel + 48, heightPanel + 48);
+                    this.scrollable.setPreferredSize(new Dimension(widthPanel + 48, heightPanel + 48));
                 this.resizeParcelas();
             } else {
                 this.drawParcelas();
             }
+        } if (e.getSource() == btnTienda) {
+            if (tiendaBodega != null) {
+                tiendaBodega.dispose();
+                tiendaBodega = null;
+            }
+            tiendaBodega = new Tiega(Tiega.TIENDA);
+            tiendaBodega.seeIt();
         }
     }
 
     @Override
     public void dispose() {
         super.dispose();
+        if (tiendaBodega != null) {
+            tiendaBodega.dispose();
+            tiendaBodega = null;
+        }
+        Granja.bob.morir();
         Granja.ventanaPrincipal.setVisible(true);
     }
 
@@ -201,9 +220,9 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == btnSelect) {
             if(e.getStateChange() == ItemEvent.SELECTED){
-                this.btnSelect.setText("Seleccionar parcelas");
-            } else {
                 this.btnSelect.setText("Realizar accion");
+            } else {
+                this.btnSelect.setText("Seleccionar parcelas");
                 Array<JLabel> jLAux = new Array<JLabel>();
                 for (int m = 0; m < parcelas.length; m++) {
                     for (int n = 0; n < parcelas[m].length; n++) {
@@ -227,54 +246,63 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         JLabel lblEvent = (JLabel) (e.getSource());
+        this.actividades.setVisible(true);
         boolean sonIguales = true;
 
-        if (lblEvent.getBorder() == bordSelect) {
+        if (lblEvent.getIcon() == Images.BLOQUEADO_IMAGE) {}
+        else if (lblEvent.getBorder() == bordSelect) {
             lblEvent.setBorder(bordMouseOver);
-            if (!isSelecting || this.selected == lblEvent)
+            if (!isSelecting) {
                 this.selected = null;
-            else {
-                this.submenuAgua.setVisible(false);
-                this.submenuGrama[0].setVisible(false);
-                this.submenuGrama[1].setVisible(false);
+                sonIguales = false;
             }
         } else if (this.isSelecting) {
             lblEvent.setBorder(bordSelect);
-            this.actividades.setVisible(true);
 
             if (this.selected == null) {
                 this.selected = lblEvent;
-            } if (lblEvent.getIcon() != this.selected.getIcon()) {
-                sonIguales = false;
-                this.actividades.setVisible(false);
-            }
+            }           
         } else {
             if (this.selected != null) {
                 this.selected.setBorder(normalBord);
             }
-            this.actividades.setVisible(true);
             lblEvent.setBorder(bordSelect);
             this.selected = lblEvent;
+            sonIguales = true;
+        }        
+
+        JLabel anterior = null;
+        boolean salir = false;
+        for (int m = 0; m < colPanel; m++) {
+            for (int n = 0; n < rowPanel; n++) {
+                if (parcelas[m][n].getBorder() == this.bordSelect) {
+                    if (anterior != null &&
+                            anterior.getIcon() != parcelas[m][n].getIcon()) {
+                        sonIguales = false;
+                        anterior = null;
+                        salir = true;
+                        break;
+                    } else {
+                        anterior = parcelas[m][n];
+                        sonIguales = true;
+                    }
+                }
+            }
+            if (salir)
+                break;
         }
-        
-        if (this.selected == null)
+
+        if (!this.isSelecting && this.selected == null || anterior == null)
             sonIguales = false;
         
-        if (sonIguales && this.selected.getIcon() == Images.GRAMA_IMAGE) {
+        if (sonIguales && anterior.getIcon() == Images.GRAMA_IMAGE) {
             this.submenuGrama[0].setVisible(true);
             this.submenuGrama[1].setVisible(true);
             this.submenuAgua.setVisible(false);
-        } else if (sonIguales && this.selected.getIcon() == Images.AGUA_IMAGE) {
+        } else if (sonIguales && anterior.getIcon() == Images.AGUA_IMAGE) {
             this.submenuGrama[0].setVisible(false);
             this.submenuGrama[1].setVisible(false);
             this.submenuAgua.setVisible(true);
-        } else if (sonIguales && (this.selected.getIcon() == Images.DESIERTO_IMAGE ||
-                                lblEvent.getIcon() == Images.DESIERTO_CACTUS_IMAGE ||
-                                lblEvent.getIcon() == Images.DESIERTO_CRANEO_IMAGE)) {
-            this.submenuGrama[0].setVisible(false);
-            this.submenuGrama[1].setVisible(false);
-            this.submenuAgua.setVisible(false);
-            this.actividades.setVisible(false);
         } else {
             this.actividades.setVisible(false);
         }
@@ -287,7 +315,8 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         JLabel lblEvent = (JLabel) (e.getSource());
-        if (lblEvent.getBorder() != bordSelect)
+        if (lblEvent.getIcon() == Images.BLOQUEADO_IMAGE) {}
+        else if (lblEvent.getBorder() != bordSelect)
             lblEvent.setBorder(bordMouseOver);
     }
 
@@ -298,7 +327,8 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
     @Override
     public void mouseExited(MouseEvent e) {
         JLabel lblEvent = (JLabel) (e.getSource());
-        if (lblEvent.getBorder() != bordSelect)
+        if (lblEvent.getIcon() == Images.BLOQUEADO_IMAGE) {}
+        else if (lblEvent.getBorder() != bordSelect)
             lblEvent.setBorder(normalBord);
     }
 
