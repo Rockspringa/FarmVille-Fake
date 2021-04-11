@@ -1,15 +1,13 @@
 package com.logic.objetos.actividades;
 
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.swing.*;
 
 import com.logic.objetos.*;
-import com.logic.objetos.seres_vivos.Animal;
-import com.logic.objetos.seres_vivos.Granjero;
+import com.logic.objetos.seres_vivos.*;
 
 
 public class Crianza extends Actividad {
-    private Animal animal;
+    private final Animal animal;
 
     public Crianza(Animal animal, Suelo[] area) {
         super(area);
@@ -35,13 +33,11 @@ public class Crianza extends Actividad {
 
     @Override
     public void pasoTiempo() {
-        // TODO Auto-generated method stub
-        
+        animal.bajarVida();
     }
 
     @Override
     public void terminarActividad(Granjero bob) {
-        // TODO Auto-generated method stub
-        
+        /////////
     }
 }

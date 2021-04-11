@@ -20,6 +20,13 @@ public class Cultivo extends Planta {
         this.productoCosecha = producto;
     }
 
+    public Cultivo(Cultivo oldMata) {
+        super(oldMata);
+        this.addImage(Images.CULTIVO_IMAGE);
+        this.cantProdCosecha = oldMata.cantProdCosecha;
+        this.productoCosecha = oldMata.productoCosecha;
+    }
+
     @Override
     public void bajarVida() {
         if (this.isAlive()) {

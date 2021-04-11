@@ -24,6 +24,14 @@ public class Arbol extends Planta {
         this.cantCosechas = cantCosechas;
     }
 
+    public Arbol(Arbol oldTree) {
+        super(oldTree);
+        this.addImage(Images.ARBOL_IMAGE);
+        this.cantProdCosecha = oldTree.cantProdCosecha;
+        this.productoCosecha = oldTree.productoCosecha;
+        this.cantCosechas = oldTree.cantCosechas;
+    }
+
     @Override
     public void bajarVida() {
         if (this.isAlive()) {
@@ -50,8 +58,10 @@ public class Arbol extends Planta {
 
     @Override
     public void cosechar(Granjero bob) {
-        for (int x = 0; x < cantProdCosecha; x++) {
-            bob.addProducto(this.productoCosecha);
+        if (this.isAlive()) {
+            for (int x = 0; x < cantProdCosecha; x++) {
+                bob.addProducto(this.productoCosecha);
+            }
         }
         if (++this.cosechaActual >= this.cantCosechas) {
             this.morir();

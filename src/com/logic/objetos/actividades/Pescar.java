@@ -2,40 +2,72 @@ package com.logic.objetos.actividades;
 
 import javax.swing.ImageIcon;
 
+import com.exec.Granja;
+import com.gui.images.Images;
 import com.logic.objetos.*;
+import com.logic.objetos.productos.Alimento;
 import com.logic.objetos.seres_vivos.Granjero;
 
 
 public class Pescar extends Actividad {
+    private int tiempoPescando;
+    private int cantPeces;
+    private int cantPecesCapturados;
+    private Alimento pescado;
+    private final Barco barco;
     
-    public Pescar(Suelo[] area) {
+    public Pescar(Barco barco, Suelo[] area) {
         super(area);
+        this.barco = barco;
+        this.tiempoPescando = 0;
+        this.cantPecesCapturados = 5;
+        this.cantPeces = (int) (Math.random() * 10 + 20);
+        this.pescado = new Alimento(2, true);
     }
 
-    public Pescar(Suelo area) {
+    public Pescar(Barco barco, Suelo area) {
         super(new Suelo[] {area});
+        this.barco = barco;
+        this.tiempoPescando = 0;
+        this.cantPecesCapturados = 5;
+        this.cantPeces = (int) (Math.random() * 10 + 20);
     }
 
     @Override
     public void realizarActividad() {
-        System.out.println("Estoy pescando");
+        for (Suelo parcela : this.getArea()) {
+            parcela.setActividad(this);
+        }
     }
 
     @Override
     public void pasoTiempo() {
-        // TODO Auto-generated method stub
-        
+        this.tiempoPescando++;
+        if (tiempoPescando % 10 == 0) {
+            int cant = 0;
+            if (cantPecesCapturados < cantPeces) {
+                cant = cantPecesCapturados;
+                cantPeces -= cantPecesCapturados;
+            } else if (cantPeces > 0) {
+                cant = cantPeces;
+                cantPeces -= cantPeces;
+            } for (int x = 0; x < cant; x++) {
+                Granja.bob.addProducto(pescado);
+            }
+        }
     }
 
     @Override
     public void terminarActividad(Granjero bob) {
-        // TODO Auto-generated method stub
-        
+        for (Suelo suelo : this.getArea()) {
+            suelo.setActividad(null);
+        }
     }
 
     @Override
     public ImageIcon getImage() {
-        // TODO Auto-generated method stub
-        return null;
-    }   
+        return (tiempoPescando % 10 == 0)
+                ? Images.BARCO_MAS_IMAGE
+                : barco.getImage();
+    }
 }

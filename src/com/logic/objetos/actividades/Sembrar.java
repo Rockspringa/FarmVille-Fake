@@ -31,7 +31,8 @@ public class Sembrar extends Actividad {
     public void terminarActividad(Granjero bob) {
         if (planta.isCosechable()) {
             planta.cosechar(bob);
-            this.getArea()[0].setActividad(null);
+            for (Suelo suelo : this.getArea())
+                suelo.setActividad(null);
         } else if (!planta.isAlive()) {
             this.limpiarCuerpo(bob);
         }

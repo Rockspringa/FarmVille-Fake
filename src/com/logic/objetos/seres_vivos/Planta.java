@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 import com.logic.objetos.*;
 
 public abstract class Planta implements SerVivo {
-    private int tiempoVivo;
+    private int tiempoVivo = 0;
     private boolean alive;
     private ImageIcon image;
     private final int deadline; /* Tiempo que tarda en morir despues de dar produtos. */
@@ -16,7 +16,7 @@ public abstract class Planta implements SerVivo {
 
     public Planta(String name, int cantSemillas, int precioSemilla,
                         int deadline, int cosechaTime) {
-                            this.name = name;
+        this.name = name;
         this.alive = true;
         this.deadline = deadline;
         this.cosechaTime = cosechaTime;
@@ -24,14 +24,13 @@ public abstract class Planta implements SerVivo {
         this.precioSemilla = precioSemilla;
     }
 
-    public Planta(String name, int cantSemillas, int precioSemilla,
-                        int deadline, int cosechaTime, ImageIcon image) {
-        this.name = name;
-        this.addImage(image);
-        this.deadline = deadline;
-        this.cosechaTime = cosechaTime;
-        this.cantSemillas = cantSemillas;
-        this.precioSemilla = precioSemilla;
+    public Planta(Planta oldPlant) {
+        this.name = oldPlant.name;
+        this.alive = true;
+        this.deadline = oldPlant.deadline;
+        this.cosechaTime = oldPlant.cosechaTime;
+        this.cantSemillas = oldPlant.cantSemillas;
+        this.precioSemilla = oldPlant.precioSemilla;
     }
 
     @Override

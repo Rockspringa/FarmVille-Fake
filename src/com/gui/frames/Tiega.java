@@ -1,10 +1,9 @@
 package com.gui.frames;
 
-import java.awt.image.*;
-import java.io.File;
-import java.io.IOException;
-import java.awt.event.*;
+import java.io.*;
 import java.awt.*;
+import java.awt.image.*;
+import java.awt.event.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,6 +16,7 @@ import com.gui.images.Images;
 import com.logic.array.Array;
 import com.logic.objetos.SerVivo;
 import com.logic.objetos.seres_vivos.*;
+import com.logic.objetos.seres_vivos.plantas.*;
 
 public class Tiega extends Frame implements MouseInputListener {
     public static final int TIENDA = 0;
@@ -25,25 +25,29 @@ public class Tiega extends Frame implements MouseInputListener {
     private static final int HEIGHT = 320;
     private static final int COL_PANEL = 5;
     private static final int ROW_PANEL = 2;
+    private final Color menuItemOriginalColor;
     private Array<TitledBorder> topTittles;
     private Array<TitledBorder> botTittles;
     private Array<Border> bords;
     private JImagePanel panelTienda;
+    private JPopupMenu menu;
+    private JMenuItem comprarBtn;
     private JLabel[] objetos;
+    private SerVivo lblClicked;
     private JButton btnIzq;
     private JButton btnDer;
+    private JLabel pocoOro;
     private Border emptyBorder;
     private Border tituloGenerico;
     private Border linePressedBorder;
     private Border lineClickedBorder;
     private Border lblBordClicked;
     private Border lblBordEntered;
-    private JLabel lblClicked;
     private Font jetFont;
     private int iter;
 
     public Tiega(int disposicion) {
-        super("Tienda", WIDTH, HEIGHT);
+        super("Mercado", WIDTH, HEIGHT);
         if (disposicion == BODEGA) {
             this.setTitle("Bodega");
         } this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -82,7 +86,7 @@ public class Tiega extends Frame implements MouseInputListener {
 
         TitledBorder titleBord1 = BorderFactory.createTitledBorder(this.emptyBorder, "Vacio");
         TitledBorder titleBord2 = BorderFactory.createTitledBorder(this.emptyBorder, "Precio");
-        jetFont = new Font("JetBrainsMono Nerd Font Mono", 1, 12);
+        this.jetFont = new Font("JetBrainsMono Nerd Font Mono", 1, 12);
 
         titleBord1.setTitleJustification(TitledBorder.CENTER);
         titleBord1.setTitleColor(Color.WHITE);
@@ -95,8 +99,26 @@ public class Tiega extends Frame implements MouseInputListener {
 
         this.tituloGenerico = BorderFactory.createCompoundBorder(titleBord2, titleBord1);
 
-        this.objetos = new JLabel[10];
-        this.llenarPanel(iter++);
+        this.menu = new JPopupMenu();
+        this.menuItemOriginalColor = this.menu.getBackground();
+
+        if (disposicion == TIENDA) {
+            this.objetos = new JLabel[10];
+            this.llenarPanel(iter);
+
+            this.comprarBtn = new JMenuItem("Comprar...");
+            this.comprarBtn.addActionListener(this);
+            this.menu.add(comprarBtn);
+
+            this.pocoOro = new JLabel();
+            this.pocoOro.setFont(jetFont);
+            this.pocoOro.setText("<html><p style=\"width:230px\">Ocurrio "
+                            + "un error durante la compra, aparentemente "
+                            + "no posee suficiente oro.</p></html>");
+            this.pocoOro.setHorizontalTextPosition(JLabel.LEFT);
+        } else if (disposicion == BODEGA) {
+
+        }
     }
 
     /**
@@ -104,8 +126,8 @@ public class Tiega extends Frame implements MouseInputListener {
      * @param numIter es el numero de veces que se ha llamado a la funcion, empezando desde 0.
      */
     private void llenarPanel(int numIter) {
-        Array<Animal> arAni= Granja.getAnimales();
-        Array<Planta> arPla= Granja.getPlantas();
+        Array<Animal> arAni = Granja.getAnimales();
+        Array<Planta> arPla = Granja.getPlantas();
         int maxAn = 0;
         int maxPl = 0;
         int maxVa = 0;
@@ -138,10 +160,10 @@ public class Tiega extends Frame implements MouseInputListener {
         }
         
         for (int x = numIter * 10; x < maxAn + (numIter * 10); x++) {
-            this.llenarArray(arAni.get(x), this.objetos[arrIndex], arrIndex);
+            this.llenarArray(arAni.get(x), arrIndex);
             arrIndex++;
         } for (int x = numMostP; x < maxPl + numMostP; x++) {
-            this.llenarArray(arPla.get(x), this.objetos[arrIndex], arrIndex);
+            this.llenarArray(arPla.get(x), arrIndex);
             arrIndex++;
         } for (int x = 0; x < maxVa; x++) {
             this.objetos[arrIndex] = new JLabel(Images.CAJA_VACIA_IMAGE);
@@ -152,8 +174,8 @@ public class Tiega extends Frame implements MouseInputListener {
         }
     }
 
-    private void llenarArray(SerVivo ser, JLabel obj, int arrIndex) {
-        obj = new JLabel(ser.getImage());
+    private void llenarArray(SerVivo ser, int arrIndex) {
+        this.objetos[arrIndex] = new JLabel(ser.getImage());
 
         this.topTittles.set(BorderFactory.createTitledBorder(this.emptyBorder,
                                 ser.getNombre(), TitledBorder.CENTER,
@@ -161,15 +183,14 @@ public class Tiega extends Frame implements MouseInputListener {
         this.botTittles.set(BorderFactory.createTitledBorder(this.emptyBorder,
                                 ser.getPrecio() + " de oro",
                                 TitledBorder.CENTER, TitledBorder.BOTTOM,
-                                this.jetFont, Color.ORANGE), arrIndex);
+                                this.jetFont, Color.BLACK), arrIndex);
 
         this.bords.set(BorderFactory.createCompoundBorder(this.botTittles.get(arrIndex),
                                 this.topTittles.get(arrIndex)), arrIndex);
 
-        obj.setBorder(this.bords.get(arrIndex));
-        obj.addMouseListener(this);
-        this.panelTienda.add(obj);
-        
+        this.objetos[arrIndex].setBorder(this.bords.get(arrIndex));
+        this.objetos[arrIndex].addMouseListener(this);
+        this.panelTienda.add(this.objetos[arrIndex]);
     }
 
     private class JImagePanel extends JPanel {
@@ -196,8 +217,87 @@ public class Tiega extends Frame implements MouseInputListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        
+        if (e.getSource() == comprarBtn) {
+            if (Granja.bob.isEnough(this.lblClicked.getPrecio())) {
+                if (this.lblClicked instanceof Animal) {
+                    Granja.bob.addCria(new Animal((Animal) (this.lblClicked)));
+                } else if (this.lblClicked instanceof Arbol) {
+                    Granja.bob.addSemilla(new Arbol((Arbol) (this.lblClicked)));
+                } else if (this.lblClicked instanceof Cultivo) {
+                    Granja.bob.addSemilla(new Cultivo((Cultivo) (this.lblClicked)));
+                } Granja.bob.setOro(this.lblClicked.getPrecio());
+            } else {
+                this.comprarBtn.setBackground(this.menuItemOriginalColor);
+                this.comprarBtn.setForeground(Color.BLACK);
+                this.comprarBtn.setIcon(null);
+                JOptionPane.showMessageDialog(this, this.pocoOro, "Oro insuficiente", JOptionPane.ERROR_MESSAGE);
+            }
+        } if (e.getSource() == btnDer) {
+            int index = (iter + 1) * 10;
+            if (this.getTitle() == "Mercado") {
+                index -= Granja.getAnimales().length();
+                index -= Granja.getPlantas().length();
+            } else if (this.getTitle() == "Bodega") {
+                index -= Granja.bob.getBodega().length();
+                index -= Granja.bob.getSemillas().length();
+                index -= Granja.bob.getCrias().length();
+            }
+
+            if (iter != 0 || index < 0) {
+                this.panelTienda.removeAll();
+            }
+            if (index < 0) {
+                this.llenarPanel(++iter);
+            } else if (iter != 0) {
+                iter = 0;
+                this.llenarPanel(iter);
+            }
+            if (iter != 0 || index < 0) {
+                this.panelTienda.revalidate();
+                this.panelTienda.repaint();
+            }
+        } if (e.getSource() == btnIzq) {
+            int index = (iter + 1) * 10;
+            if (this.getTitle() == "Mercado") {
+                index -= Granja.getAnimales().length();
+                index -= Granja.getPlantas().length();
+            } else if (this.getTitle() == "Bodega") {
+                index -= Granja.bob.getBodega().length();
+                index -= Granja.bob.getSemillas().length();
+                index -= Granja.bob.getCrias().length();
+            }
+
+            if (iter > 0 || index < 0) {
+                this.panelTienda.removeAll();
+            }
+            if (iter > 0) {
+                this.llenarPanel(--iter);
+            } else if (index < 0) {
+                while (true) {
+                    int numSumado = 2;
+                    index = (iter + numSumado) * 10;
+                    if (this.getTitle() == "Mercado") {
+                        index -= Granja.getAnimales().length();
+                        index -= Granja.getPlantas().length();
+                    } else if (this.getTitle() == "Bodega") {
+                        index -= Granja.bob.getBodega().length();
+                        index -= Granja.bob.getSemillas().length();
+                        index -= Granja.bob.getCrias().length();
+                    }
+                    if (index > 0) {
+                        --numSumado;
+                        index -= 10;
+                        iter += numSumado;
+                        this.llenarPanel(iter);
+                        break;
+                    } numSumado++;
+                }
+            }
+            if (iter > 0 || index < 0) {
+                this.panelTienda.revalidate();
+                this.panelTienda.repaint();
+            }
+        }
     }
 
     @Override
@@ -234,20 +334,35 @@ public class Tiega extends Frame implements MouseInputListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
+        JLabel ev = (JLabel) (e.getSource());
+        if (ev.getIcon() != Images.CAJA_VACIA_IMAGE) {
+            Array<Animal> arAni = Granja.getAnimales();
+            Array<Planta> arPla = Granja.getPlantas();
+            int indexEv = -1;
+            for (int x = 0; x < 10; x++) {
+                if (this.objetos[x] == ev) {
+                    indexEv = x;
+                    break;
+                }
+            } indexEv += 10 * this.iter;
+            if (arAni.length() > indexEv) {
+                this.lblClicked = arAni.get(indexEv);
+            } else if (arPla.length() + arAni.length() > indexEv) {
+                this.lblClicked = arPla.get(indexEv - arAni.length());
+            }
+
+            if (!Granja.bob.isEnough(this.lblClicked.getPrecio())) {
+                this.comprarBtn.setBackground(new Color(163, 184, 204));
+                this.comprarBtn.setForeground(Color.RED);
+                this.comprarBtn.setIcon(Images.ERROR_IMAGE);
+            }
+            menu.show(e.getComponent(), e.getX(), e.getY());
+        }
     }
 
     @Override
-    public void mouseDragged(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void mouseDragged(MouseEvent e) {}
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
+    public void mouseMoved(MouseEvent e) {}
 }

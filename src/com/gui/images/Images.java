@@ -10,6 +10,14 @@ public class Images {
 
     public static final File MADERAS_FILE = new File("src\\com\\gui\\images\\diseño\\Maderas.png");
 
+    private static final ImageIcon ERROR_ICON = new ImageIcon("src\\com\\gui\\images\\diseño\\Error.png");
+    private static final Image ERROR_IM_IC = ERROR_ICON.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+    public static final ImageIcon ERROR_IMAGE = new ImageIcon(ERROR_IM_IC);
+
+    private static final ImageIcon ERROR_INVERSO_ICON = new ImageIcon("src\\com\\gui\\images\\diseño\\Error_Inverso.png");
+    private static final Image ERROR_INVERSO_IM_IC = ERROR_INVERSO_ICON.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
+    public static final ImageIcon ERROR_INVERSO_IMAGE = new ImageIcon(ERROR_INVERSO_IM_IC);
+
     private static final ImageIcon CAJA_VACIA_ICON = new ImageIcon("src\\com\\gui\\images\\diseño\\Caja_Vacia.png");
     private static final Image CAJA_VACIA_IM_IC = CAJA_VACIA_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
     public static final ImageIcon CAJA_VACIA_IMAGE = new ImageIcon(CAJA_VACIA_IM_IC);
@@ -61,6 +69,14 @@ public class Images {
     private static final ImageIcon BLOQUEADO_ICON = new ImageIcon("src\\com\\gui\\images\\Bloqueado.png");
     private static final Image BLOQUEADO_IM_IC = BLOQUEADO_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
     public static final ImageIcon BLOQUEADO_IMAGE = new ImageIcon(BLOQUEADO_IM_IC);
+
+    private static final ImageIcon BARCO_ICON = new ImageIcon("src\\com\\gui\\images\\Barco.png");
+    private static final Image BARCO_IM_IC = BARCO_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
+    public static final ImageIcon BARCO_IMAGE = new ImageIcon(BARCO_IM_IC);
+
+    private static final ImageIcon BARCO_MAS_ICON = new ImageIcon("src\\com\\gui\\images\\Barco_Mas.png");
+    private static final Image BARCO_MAS_IM_IC = BARCO_MAS_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
+    public static final ImageIcon BARCO_MAS_IMAGE = new ImageIcon(BARCO_MAS_IM_IC);
 
     /* Todas las imagenes de plantas */
 

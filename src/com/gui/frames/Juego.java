@@ -67,8 +67,6 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
      */
     private void drawParcelas() {
         panelParcelas.removeAll();
-        panelParcelas.revalidate();
-        panelParcelas.repaint();
         panelParcelas.setSize(widthPanel, heightPanel);
         panelParcelas.setLayout(new GridLayout(rowPanel, colPanel, 0, 0));
 
@@ -91,6 +89,9 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
                 } this.panelParcelas.add(parcelas[m][n]);
             }
         }
+        
+        panelParcelas.revalidate();
+        panelParcelas.repaint();
     }
     
     public Juego() {
@@ -335,18 +336,14 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
     /* Eventos que vienen incluidos en la interfaz MouseInputListener pero que aun no poseen
         utilidad en este proyecto. */
     @Override
-    public void mousePressed(MouseEvent e) {
-    }
+    public void mousePressed(MouseEvent e) {}
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-    }
+    public void mouseReleased(MouseEvent e) {}
 
     @Override
-    public void mouseDragged(MouseEvent e) {
-    }
+    public void mouseDragged(MouseEvent e) {}
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-    }
+    public void mouseMoved(MouseEvent e) {}
 }

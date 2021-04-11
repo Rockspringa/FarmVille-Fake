@@ -7,6 +7,8 @@ public class Granjero {
     private final String nombre;
     private final String apodo;
     private Array<Producto> bodega;
+    private Array<Animal> crias;
+    private Array<Planta> semillas;
     private boolean vivo;
     private int vida;
     private int oro;
@@ -14,22 +16,40 @@ public class Granjero {
     public Granjero(String nombre, String apodo) {
         this.nombre = nombre;
         this.apodo = apodo;
+        this.crias = new Array<Animal>();
         this.bodega = new Array<Producto>();
+        this.semillas = new Array<Planta>();
     }
 
     public void addProducto(Producto producto) {
         this.bodega.add(producto);
     }
 
+    public void addCria(Animal cria) {
+        this.crias.add(cria);
+    }
+
+    public void addSemilla(Planta semilla) {
+        this.semillas.add(semilla);
+    }
+
     public Array<Producto> getBodega() {
         return this.bodega;
+    }
+
+    public Array<Animal> getCrias() {
+        return this.crias;
+    }
+
+    public Array<Planta> getSemillas() {
+        return this.semillas;
     }
 
     public void newGame() {
         if (this.vivo == false) {
             this.vivo = true;
             this.vida = 20;
-            this.setOro(100);
+            this.oro = 20;
         }
     }
 
