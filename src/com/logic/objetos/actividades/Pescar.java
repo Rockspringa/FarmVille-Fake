@@ -3,10 +3,11 @@ package com.logic.objetos.actividades;
 import javax.swing.ImageIcon;
 
 import com.exec.Granja;
-import com.gui.images.Images;
 import com.logic.objetos.*;
-import com.logic.objetos.productos.Alimento;
-import com.logic.objetos.seres_vivos.Granjero;
+import com.gui.images.Images;
+import com.logic.objetos.posee_materia.*;
+import com.logic.objetos.posee_materia.productos.*;
+import com.logic.objetos.posee_materia.seres_vivos.*;
 
 
 public class Pescar extends Actividad {
@@ -22,7 +23,7 @@ public class Pescar extends Actividad {
         this.tiempoPescando = 0;
         this.cantPecesCapturados = 5;
         this.cantPeces = (int) (Math.random() * 10 + 20);
-        this.pescado = new Alimento(2, true);
+        this.pescado = new Alimento(3, 2, true, "Pescado", Images.PESCADO_IMAGE);
     }
 
     public Pescar(Barco barco, Suelo area) {

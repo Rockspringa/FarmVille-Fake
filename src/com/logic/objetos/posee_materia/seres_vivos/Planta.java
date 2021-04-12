@@ -1,8 +1,8 @@
-package com.logic.objetos.seres_vivos;
+package com.logic.objetos.posee_materia.seres_vivos;
 
 import javax.swing.ImageIcon;
 
-import com.logic.objetos.*;
+import com.logic.objetos.posee_materia.SerVivo;
 
 public abstract class Planta implements SerVivo {
     private int tiempoVivo = 0;

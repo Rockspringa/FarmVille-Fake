@@ -1,8 +1,10 @@
-package com.logic.objetos;
+package com.logic.objetos.posee_materia;
 
 import javax.swing.ImageIcon;
 
-public abstract class Suelo {
+import com.logic.objetos.*;
+
+public abstract class Suelo implements PoseeMateria {
     private ImageIcon image;
     private Actividad actividad;
     private static int cantSuelos = 0;
@@ -11,6 +13,11 @@ public abstract class Suelo {
     public Suelo(ImageIcon image) {
         this.addImage(image);
         cantSuelos++;
+    }
+
+    @Override
+    public String getNombre() {
+        return this.getClass().getSimpleName();
     }
 
     public Actividad getActividad() {
@@ -33,6 +40,7 @@ public abstract class Suelo {
             this.image = image;
     }
 
+    @Override
     public int getPrecio() {
         return precio;
     }
@@ -41,6 +49,7 @@ public abstract class Suelo {
         return Suelo.cantSuelos;
     }
 
+    @Override
     public ImageIcon getImage() {
         return (this.actividad == null)
                     ? this.image

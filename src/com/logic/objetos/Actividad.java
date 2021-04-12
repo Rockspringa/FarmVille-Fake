@@ -2,7 +2,8 @@ package com.logic.objetos;
 
 import javax.swing.ImageIcon;
 
-import com.logic.objetos.seres_vivos.Granjero;
+import com.logic.objetos.posee_materia.*;
+import com.logic.objetos.posee_materia.seres_vivos.*;
 
 public abstract class Actividad {
     private final Suelo[] area;

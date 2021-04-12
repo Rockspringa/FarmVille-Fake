@@ -1,9 +1,12 @@
-package com.logic.objetos.seres_vivos;
+package com.logic.objetos.posee_materia.seres_vivos;
+
+import javax.swing.ImageIcon;
 
 import com.logic.array.Array;
-import com.logic.objetos.*;
+import com.logic.objetos.posee_materia.*;
+import com.logic.objetos.posee_materia.productos.*;
 
-public class Granjero {
+public class Granjero implements SerVivo {
     private final String nombre;
     private final String apodo;
     private Array<Producto> bodega;
@@ -62,14 +65,20 @@ public class Granjero {
                                     : this.oro;
     }
 
+    public void ganaOro(int oro) {
+        this.oro += oro;
+    }
+
     public boolean isEnough(int precio) {
         return (precio <= this.oro) ? true : false;
     }
 
+    @Override
     public int getVida() {
         return this.vida;
     }
 
+    @Override
     public void bajarVida() {
         if (vida <= 1) {
             this.vida = 0;
@@ -80,6 +89,7 @@ public class Granjero {
         }
     }
 
+    @Override
     public boolean isAlive() {
         return this.vivo;
     }
@@ -88,13 +98,36 @@ public class Granjero {
         return this.apodo;
     }
 
+    @Override
     public String getNombre() {
         return this.nombre;
     }
 
+    @Override
     public void morir() {
         this.vida = 0;
         this.vivo = false;
         this.setOro(this.getOro());
+    }
+
+    @Override
+    public int getPrecio() {
+        return this.getOro();
+    }
+
+    @Override
+    public void alimentarse(Producto alimento) {
+        Alimento alim = null;
+        if (alimento instanceof Alimento) {
+            alim = (Alimento) (alimento);
+            if (this.isAlive()) {
+                this.vida += alim.getVidaRecuperable();
+            }
+        }
+    }
+
+    @Override
+    public ImageIcon getImage() {
+        return null;
     }
 }

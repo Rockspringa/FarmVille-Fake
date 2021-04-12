@@ -1,5 +1,6 @@
-package com.logic.objetos.suelos;
+package com.logic.objetos.posee_materia.suelos;
 
+import com.logic.objetos.posee_materia.*;
 import com.gui.images.Images;
 import com.logic.objetos.*;
 

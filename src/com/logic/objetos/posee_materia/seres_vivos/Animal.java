@@ -1,19 +1,22 @@
-package com.logic.objetos.seres_vivos;
+package com.logic.objetos.posee_materia.seres_vivos;
 
 import javax.swing.ImageIcon;
 
 import com.exec.Granja;
 import com.gui.images.Images;
-import com.logic.objetos.*;
-import com.logic.objetos.productos.*;
+import com.logic.objetos.posee_materia.*;
+import com.logic.objetos.posee_materia.productos.*;
 
 public class Animal implements SerVivo {
-    private final Producto produce;
+    private final Producto produceDestace;
+    private final Producto produceProd;
     private final boolean destazable;
     private final boolean productor;
     private final boolean omnivoro;
     private final double numParcelas;
     private final String nombre;
+    private final int cantProdDestace;
+    private final int cantProdProd;
     private final int precio;
     private ImageIcon imageNormal;
     private ImageIcon imageMuerto;
@@ -134,15 +137,18 @@ public class Animal implements SerVivo {
     public void bajarVida() {
         this.tiempo++;
         this.tiempoDestace++;
-        if (tiempo >= vida) {
-            this.morir();
+        if (tiempo >= vida || tiempoDestace > 80) {
+            this.vida = 0;
+            this.vivo = false;
         }
     }
 
+    @Override
     public boolean isAlive() {
         return this.vivo;
     }
 
+    @Override
     public void alimentarse(Producto comida) {
         Alimento alm;
         if (comida instanceof Alimento) {
@@ -161,8 +167,13 @@ public class Animal implements SerVivo {
 
     @Override
     public void morir() {
-        if (destazable && this.tiempoDestace > 25) {
-            Granja.bob.addProducto(this.produce);
+        if (destazable && isReadyToDead()) {
+                if (this.productoCosecha instanceof Alimento)
+                    bob.addProducto(new Alimento((Alimento) (this.productoCosecha)));
+                else
+                    bob.addProducto(new Producto(this.productoCosecha));
+            this.vida = 0;
+            this.vivo = false;
         }
     }
 
@@ -170,8 +181,12 @@ public class Animal implements SerVivo {
         return this.destazable;
     }
 
+    public boolean isReadyToDead() {
+        return this.tiempoDestace > 25 && isAlive();
+    }
+
     public void getProductos() {
-        if (productor) {
+        if (productor && isReadyToRecolect()) {
             Granja.bob.addProducto(this.produce);
             this.vida-= this.tiempo;
             this.tiempo -= this.tiempo;
@@ -184,6 +199,6 @@ public class Animal implements SerVivo {
 
     public boolean isReadyToRecolect() {
         return (isProductor() && this.tiempo > 15)
-                            ? true : false;
+                        ? (isAlive()) ? true : false : false;
     }
 }

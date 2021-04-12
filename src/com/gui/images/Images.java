@@ -18,6 +18,10 @@ public class Images {
     private static final Image ERROR_INVERSO_IM_IC = ERROR_INVERSO_ICON.getImage().getScaledInstance(15, 15, Image.SCALE_SMOOTH);
     public static final ImageIcon ERROR_INVERSO_IMAGE = new ImageIcon(ERROR_INVERSO_IM_IC);
 
+    private static final ImageIcon ORO_ICON = new ImageIcon("src\\com\\gui\\images\\diseño\\Oro.png");
+    private static final Image ORO_IM_IC = ORO_ICON.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
+    public static final ImageIcon ORO_IMAGE = new ImageIcon(ORO_IM_IC);
+
     private static final ImageIcon CAJA_VACIA_ICON = new ImageIcon("src\\com\\gui\\images\\diseño\\Caja_Vacia.png");
     private static final Image CAJA_VACIA_IM_IC = CAJA_VACIA_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
     public static final ImageIcon CAJA_VACIA_IMAGE = new ImageIcon(CAJA_VACIA_IM_IC);
@@ -35,7 +39,7 @@ public class Images {
     public static final ImageIcon GRANJERO_IMAGE = new ImageIcon(GRANJERO_IM_IC);
 
     private static final ImageIcon CABEZA_ICON = new ImageIcon("src\\com\\gui\\images\\diseño\\Cabeza.png");
-    private static final Image CABEZA_IM_IC = CABEZA_ICON.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+    private static final Image CABEZA_IM_IC = CABEZA_ICON.getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH);
     public static final ImageIcon CABEZA_IMAGE = new ImageIcon(CABEZA_IM_IC);
 
     private static final ImageIcon CORAZON_ICON = new ImageIcon("src\\com\\gui\\images\\diseño\\Corazon.png");
@@ -169,4 +173,30 @@ public class Images {
     private static final ImageIcon VACA_ICON = new ImageIcon("src\\com\\gui\\images\\animales\\Vaca.png");
     private static final Image VACA_IM_IC = VACA_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
     public static final ImageIcon VACA_IMAGE = new ImageIcon(VACA_IM_IC);
+
+    /* Todos los productos y imagenes usadas en el mercado */
+
+    private static final ImageIcon PESCADO_ICON = new ImageIcon("src\\com\\gui\\images\\compra\\Pescado.png");
+    private static final Image PESCADO_IM_IC = PESCADO_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
+    public static final ImageIcon PESCADO_IMAGE = new ImageIcon(PESCADO_IM_IC);
+
+    private static final ImageIcon SEMILLA_ICON = new ImageIcon("src\\com\\gui\\images\\compra\\Semilla.png");
+    private static final Image SEMILLA_IM_IC = SEMILLA_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
+    public static final ImageIcon SEMILLA_IMAGE = new ImageIcon(SEMILLA_IM_IC);
+
+    private static final ImageIcon MANZANA_ICON = new ImageIcon("src\\com\\gui\\images\\compra\\Manzana.png");
+    private static final Image MANZANA_IM_IC = MANZANA_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
+    public static final ImageIcon MANZANA_IMAGE = new ImageIcon(MANZANA_IM_IC);
+
+    private static final ImageIcon MAIZ_ICON = new ImageIcon("src\\com\\gui\\images\\compra\\Maiz.png");
+    private static final Image MAIZ_IM_IC = MAIZ_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
+    public static final ImageIcon MAIZ_IMAGE = new ImageIcon(MAIZ_IM_IC);
+
+    private static final ImageIcon LECHE_ICON = new ImageIcon("src\\com\\gui\\images\\compra\\Leche.png");
+    private static final Image LECHE_IM_IC = LECHE_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
+    public static final ImageIcon LECHE_IMAGE = new ImageIcon(LECHE_IM_IC);
+
+    private static final ImageIcon HUEVO_ICON = new ImageIcon("src\\com\\gui\\images\\compra\\Huevo.png");
+    private static final Image HUEVO_IM_IC = HUEVO_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
+    public static final ImageIcon HUEVO_IMAGE = new ImageIcon(HUEVO_IM_IC);
 }

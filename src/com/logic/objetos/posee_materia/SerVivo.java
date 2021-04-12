@@ -1,8 +1,12 @@
-package com.logic.objetos;
+package com.logic.objetos.posee_materia;
 
-import javax.swing.ImageIcon;
+import com.logic.objetos.PoseeMateria;
 
-public interface SerVivo {
+/**
+ * La interfaz hereda la funcionalidad de <code>PoseeMateri</code> para que mantengan la funcionalidad
+ * dentro del juego, los seres vivos tendran que poseer sus caracteristicas intrinsecas.
+ */
+public interface SerVivo extends PoseeMateria {
     int ANIMAL = 0;
     int PLANTA = 1;
 
@@ -11,13 +15,6 @@ public interface SerVivo {
      * @return un entero de la cantidad de vida que le queda.
      */
     public abstract int getVida();
-
-    /**
-     * Todos los seres vivos tienen un precio, excepto el granjero,
-     * para poder adquirilos se tendra que pagar el mismo.
-     * @return un entero de la cantidad de dinero a pagar.
-     */
-    public abstract int getPrecio();
 
     /**
      * El metodo sirve para que el ser vivo muera, con cada uno funciona
@@ -47,17 +44,4 @@ public interface SerVivo {
      * @return true si el ser vivo esta vivo y false si esta muerto.
      */
     public abstract boolean isAlive();
-
-    /**
-     * Todos los seres vivos deben tener un nombre, el metodo le pregunta al ser
-     * vivo cual es su nombre.
-     * @return un string con el nombre del ser vivo.
-     */
-    public abstract String getNombre();
-
-    /**
-     * Los seres vivos estan representados por una imagen.
-     * @return un ImageIcon con que represente al ser vivo y su estado.
-     */
-    public abstract ImageIcon getImage();
 }

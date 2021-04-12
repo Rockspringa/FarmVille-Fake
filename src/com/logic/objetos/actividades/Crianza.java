@@ -3,7 +3,8 @@ package com.logic.objetos.actividades;
 import javax.swing.*;
 
 import com.logic.objetos.*;
-import com.logic.objetos.seres_vivos.*;
+import com.logic.objetos.posee_materia.*;
+import com.logic.objetos.posee_materia.seres_vivos.*;
 
 
 public class Crianza extends Actividad {
@@ -14,8 +15,13 @@ public class Crianza extends Actividad {
         this.animal = animal;
     }
 
+    public Crianza(Animal animal, Suelo area) {
+        super(new Suelo[] {area});
+        this.animal = animal;
+    }
+
     public static boolean enoughtSpace(Animal animal, Suelo[] area) {
-        return (animal.getNumParcelas() > area.length)
+        return (animal.getNumParcelas() >= area.length)
                 ? false : true;
     }
 
@@ -38,6 +44,20 @@ public class Crianza extends Actividad {
 
     @Override
     public void terminarActividad(Granjero bob) {
-        /////////
+        if (animal.isProductor() && animal.isDestazable()) {
+            if (animal.isReadyToRecolect()) {
+                animal.getProductos();
+            } else if (animal.isReadyToDead()) {
+                animal.morir();
+            } else if (!animal.isAlive()) {
+                this.limpiarCuerpo(bob);
+            }
+        } else if (animal.isDestazable() && animal.isReadyToDead()) {
+            animal.morir();
+        } else if (animal.isProductor() && animal.isReadyToDead()) {
+            animal.getProductos();
+        } else if (!animal.isAlive()) {
+            this.limpiarCuerpo(bob);
+        }
     }
 }

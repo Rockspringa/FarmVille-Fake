@@ -1,7 +1,7 @@
 package com.logic.hilos;
 
 import com.exec.Granja;
-import com.logic.objetos.Suelo;
+import com.logic.objetos.posee_materia.Suelo;
 
 public class MatarTiempo extends Thread {
 

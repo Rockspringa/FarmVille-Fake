@@ -3,8 +3,8 @@ package com.logic.objetos.actividades;
 import javax.swing.ImageIcon;
 
 import com.logic.objetos.*;
-import com.logic.objetos.seres_vivos.Granjero;
-import com.logic.objetos.seres_vivos.Planta;
+import com.logic.objetos.posee_materia.*;
+import com.logic.objetos.posee_materia.seres_vivos.*;
 
 
 public class Sembrar extends Actividad {
@@ -31,8 +31,10 @@ public class Sembrar extends Actividad {
     public void terminarActividad(Granjero bob) {
         if (planta.isCosechable()) {
             planta.cosechar(bob);
-            for (Suelo suelo : this.getArea())
-                suelo.setActividad(null);
+            if (!planta.isAlive()) {
+                for (Suelo suelo : this.getArea())
+                    suelo.setActividad(null);
+            }
         } else if (!planta.isAlive()) {
             this.limpiarCuerpo(bob);
         }

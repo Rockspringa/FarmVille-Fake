@@ -19,19 +19,23 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
     private JScrollPane scrollable;
     private JLabel[][] parcelas;
     private JMenuItem submenuAgua;
+    private JMenuItem btnAgregar;
+    private JMenuItem btnTienda;
+    private JMenuItem btnBodega;
     private Container panelParcelas;
-    private JMenuBar bar;
     private JLabel[] vida;
-    private JButton btnAgregar;
-    private JButton btnTienda;
+    private JLabel[] cantOro;
+    private JMenuBar bar;
     private boolean isSelecting = false;
     private JMenu[] submenuGrama;
     private Border normalBord;
     private Border bordSelect;
     private Border bordMouseOver;
     private JLabel selected;
+    private JPanel panelOro;
     private JPanel panelVida;
     private JMenu actividades;
+    private JMenu opciones;
     private Tiega tiendaBodega;
     private int widthPanel = 550;
     private int heightPanel = 550;
@@ -106,15 +110,22 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
         this.bar = new JMenuBar();
         this.setJMenuBar(bar);
 
-        this.btnAgregar = new JButton("Agregar parcela");
+        this.opciones = new JMenu("Compra/Vender");
+        this.bar.add(this.opciones);
+
+        this.btnAgregar = new JMenuItem("Comprar tierra");
         this.btnAgregar.addActionListener(this);
-        this.bar.add(this.btnAgregar);
+        this.opciones.add(this.btnAgregar);
 
-        this.btnTienda = new JButton("Abrir Mercado");
+        this.btnTienda = new JMenuItem("Abrir Mercado");
         this.btnTienda.addActionListener(this);
-        this.bar.add(this.btnTienda);
+        this.opciones.add(this.btnTienda);
 
-        this.btnSelect = new JToggleButton("Seleccionar parcelas");
+        this.btnBodega = new JMenuItem("Abrir Bodega");
+        this.btnBodega.addActionListener(this);
+        this.opciones.add(this.btnBodega);
+
+        this.btnSelect = new JToggleButton("Seleccionar tierras");
         this.btnSelect.addItemListener(this);
         this.bar.add(this.btnSelect);
 
@@ -136,26 +147,51 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
         this.actividades.add(this.submenuAgua);
 
         /* Creacion de una especie de barra para mostrar la vida del granjero y el oro del mismo. */
-        this.panelVida = new JPanel();
-        this.panelVida.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        this.panelVida = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         this.panelVida.setAlignmentX(JPanel.LEFT_ALIGNMENT);
-        this.panelVida.setPreferredSize(new Dimension(440, 40));
+        this.panelVida.setAlignmentY(JPanel.BOTTOM_ALIGNMENT);
+        this.panelVida.setPreferredSize(new Dimension(620, 35));
         window.add(this.panelVida);
 
         /* Creacion de labels para la cantidad de vida. */
-        this.vida = new JLabel[21];
+        this.vida = new JLabel[17];
+        Dimension oroDim = new Dimension(35, 35);
+        Dimension heartDim = new Dimension(20, 20);
         
         this.vida[0] = new JLabel(Images.CABEZA_IMAGE);
         this.vida[0].setOpaque(true);
-        this.vida[0].setPreferredSize(new Dimension(40, 40));
+        this.vida[0].setPreferredSize(oroDim);
         this.panelVida.add(this.vida[0]);
 
-        for (int x = 1; x < 21; x++) {
+        for (int x = 1; x < 16; x++) {
             this.vida[x] = new JLabel(Images.CORAZON_IMAGE);
             this.vida[x].setOpaque(true);
-            this.vida[x].setPreferredSize(new Dimension(20, 20));
+            this.vida[x].setPreferredSize(heartDim);
             this.panelVida.add(this.vida[x]);
         }
+        this.vida[16] = new JLabel("+ 5");
+        this.vida[16].setVerticalTextPosition(JLabel.CENTER);
+        this.vida[16].setFont(new Font("JetBrainsMono Nerd Font Mono", 1, 14));
+        this.vida[16].setPreferredSize(oroDim);
+        this.panelVida.add(this.vida[16]);
+
+        this.panelOro = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        this.panelOro.setPreferredSize(new Dimension(135, 35));
+        this.panelOro.setAlignmentX(JPanel.RIGHT_ALIGNMENT);
+        this.panelVida.add(this.panelOro);
+
+        this.cantOro = new JLabel[2];
+        this.cantOro[0] = new JLabel("20");
+        this.cantOro[0].setVerticalTextPosition(JLabel.CENTER);
+        this.cantOro[0].setHorizontalTextPosition(JLabel.RIGHT);
+        this.cantOro[0].setPreferredSize(oroDim);
+        this.cantOro[0].setFont(new Font("JetBrainsMono Nerd Font Mono", 1, 14));
+        this.panelOro.add(this.cantOro[0]);
+
+        this.cantOro[1] = new JLabel(Images.ORO_IMAGE);
+        this.cantOro[1].setOpaque(true);
+        this.cantOro[1].setPreferredSize(oroDim);
+        this.panelOro.add(this.cantOro[1]);
 
         /* Creacion de panel de parcelas, llenado de parcelas y los bordes que se utilizaran
             en las parcelas */
@@ -191,6 +227,13 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
             }
             tiendaBodega = new Tiega(Tiega.TIENDA);
             tiendaBodega.seeIt();
+        } if (e.getSource() == btnBodega) {
+            if (tiendaBodega != null) {
+                tiendaBodega.dispose();
+                tiendaBodega = null;
+            }
+            tiendaBodega = new Tiega(Tiega.BODEGA);
+            tiendaBodega.seeIt();
         }
     }
 
@@ -209,21 +252,31 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
      * Disminuye la vida del granjero, solo visualmente.
      */
     public void bajoVida() {
-        for (int x = 20; x > 0; x--) {
-            if (this.vida[x].isVisible()) {
-                this.vida[x].setVisible(false);
-                break;
+        int width = 135;
+        if (Granja.bob.getVida() > 15) {
+            for (int x = 1; x < 16; x++) {
+                this.vida[x].setVisible(true);
             }
+            this.vida[16].setText("+ " + (Granja.bob.getVida() - 15));
+        } else {
+            for (int x = 1; x < Granja.bob.getVida(); x++)
+                this.vida[x].setVisible(true);
+            for (int x = Granja.bob.getVida(); x < 17; x++) {
+                this.vida[x].setVisible(false);
+                width += 25;
+            } width += 15;
         }
+        this.panelOro.setPreferredSize(new Dimension(width, 40));
+        this.cantOro[1].setText(String.valueOf(Granja.bob.getOro()));
     }
 
     @Override
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == btnSelect) {
             if(e.getStateChange() == ItemEvent.SELECTED){
-                this.btnSelect.setText("Realizar accion");
+                this.btnSelect.setText("Cancelar seleccion ");
             } else {
-                this.btnSelect.setText("Seleccionar parcelas");
+                this.btnSelect.setText("Seleccionar tierras");
                 Array<JLabel> jLAux = new Array<JLabel>();
                 for (int m = 0; m < parcelas.length; m++) {
                     for (int n = 0; n < parcelas[m].length; n++) {

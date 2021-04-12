@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 import com.gui.Frame;
 import com.exec.Granja;
-import com.logic.objetos.seres_vivos.*;
+import com.logic.objetos.posee_materia.seres_vivos.*;
 
 
 public class Login extends Frame implements FocusListener {

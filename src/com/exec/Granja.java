@@ -6,10 +6,11 @@ import com.gui.Frame;
 import com.gui.frames.*;
 import com.gui.images.Images;
 import com.logic.array.Array;
-import com.logic.objetos.*;
-import com.logic.objetos.suelos.*;
-import com.logic.objetos.seres_vivos.*;
-import com.logic.objetos.seres_vivos.plantas.*;
+import com.logic.objetos.posee_materia.*;
+import com.logic.objetos.posee_materia.suelos.*;
+import com.logic.objetos.posee_materia.productos.*;
+import com.logic.objetos.posee_materia.seres_vivos.*;
+import com.logic.objetos.posee_materia.seres_vivos.plantas.*;
 
 public class Granja {
     public static Frame ventanaPrincipal;
@@ -17,14 +18,17 @@ public class Granja {
     private static Suelo[][] parcelas;
     private static Array<Planta> plantas;
     private static Array<Animal> animales;
+    private static Array<Producto> productos;
 
     public static void main(String[] args) {
         Granja.plantas = new Array<Planta>();
         Granja.animales = new Array<Animal>();
-        addCultivo("Maiz", 3, 3, 15, 10, 3, null);
-        addArbol("Manzano", 3, 5, 7, 25, 18, 4, null);
-        addAnimal("Vaca", 2, 10, false, true, true, null, Images.VACA_IMAGE);
-        addAnimal("Gallina", 0.5, 10, false, true, true, null, Images.GALLINA_IMAGE);
+        Granja.productos = new Array<Producto>();
+        productos.add(new Barco());
+        addCultivo("Maiz", 3, 3, 15, 10, 3, new Producto(5, "Maiz", Images.MAIZ_IMAGE));
+        addArbol("Manzano", 3, 5, 7, 25, 18, 4, new Producto(3, "Manzana", Images.MANZANA_IMAGE));
+        //animales.add((new Animal("Vaca")));
+        //animales.add((new Animal("Gallina")));
         new Login().seeIt();
     }
 
@@ -45,10 +49,10 @@ public class Granja {
 
     public static void addAnimal(String name, double numParcelas, int precio,
                         boolean esOmnivoro, boolean esProductor, boolean esDestazable,
-                        Producto produce, ImageIcon image) {
+                        Producto produce) {
         
         animales.add(new Animal(name, numParcelas, precio, esOmnivoro,
-                            esProductor, esDestazable, produce, image));
+                            esProductor, esDestazable, produce));
     }
 
     public static ImageIcon getJParcela(int m, int n) {
@@ -172,5 +176,9 @@ public class Granja {
 
     public static Array<Planta> getPlantas() {
         return Granja.plantas;
+    }
+    
+    public static Array<Producto> getProductos() {
+        return Granja.productos;
     }
 }
