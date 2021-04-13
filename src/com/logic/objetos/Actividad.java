@@ -7,9 +7,16 @@ import com.logic.Opcion;
 import com.logic.objetos.posee_materia.*;
 import com.logic.objetos.posee_materia.seres_vivos.*;
 
+/**
+ * Clase que representa la crianza, siembra y pesca.
+ */
 public abstract class Actividad {
     private final Suelo[] area;
 
+    /**
+     * Crea una actividad.
+     * @param area son los cuadros en los cuales se dara la actividad
+     */
     public Actividad(Suelo[] area) {
         this.area = area;
     }
