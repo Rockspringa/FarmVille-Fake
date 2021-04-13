@@ -19,9 +19,6 @@ public class Granjero implements SerVivo {
     public Granjero(String nombre, String apodo) {
         this.nombre = nombre;
         this.apodo = apodo;
-        this.crias = new Array<Animal>();
-        this.bodega = new Array<Producto>();
-        this.semillas = new Array<Planta>();
     }
 
     public void addProducto(Producto producto) {
@@ -51,8 +48,11 @@ public class Granjero implements SerVivo {
     public void newGame() {
         if (this.vivo == false) {
             this.vivo = true;
-            this.vida = 20;
-            this.oro = 20;
+            this.vida = 200;
+            this.oro = 200;
+            this.crias = new Array<Animal>();
+            this.bodega = new Array<Producto>();
+            this.semillas = new Array<Planta>();
         }
     }
 

@@ -2,6 +2,7 @@ package com.logic.objetos.actividades;
 
 import javax.swing.*;
 
+import com.logic.Opcion;
 import com.logic.objetos.*;
 import com.logic.objetos.posee_materia.*;
 import com.logic.objetos.posee_materia.seres_vivos.*;
@@ -33,6 +34,11 @@ public class Crianza extends Actividad {
     }    
 
     @Override
+    public SerVivo getSer() {
+        return this.animal;
+    }
+
+    @Override
     public ImageIcon getImage() {
         return animal.getImage();
     }
@@ -40,6 +46,37 @@ public class Crianza extends Actividad {
     @Override
     public void pasoTiempo() {
         animal.bajarVida();
+    }
+
+    @Override
+    public Opcion getOpcion(Actividad act) {
+        if (act instanceof Crianza) {
+            Animal an = (Animal) (act.getSer());
+            Animal an2 = (Animal) (this.getSer());
+            if (an.isAlive() && an2.isAlive()) {
+                if (an.isReadyToRecolect() && an2.isReadyToRecolect()) {
+                    return Opcion.RECOLECTAR;
+                } if (an.isReadyToDead() && an2.isReadyToDead()) {
+                    return Opcion.DESTAZAR;
+                } return Opcion.ALIMENTAR;
+            } else if (an.isAlive() == an2.isAlive()) {
+                return Opcion.LIMPIAR;
+            }
+        } return Opcion.NADA;
+    }
+
+    @Override
+    public Opcion getOpcion() {
+        Animal an = (Animal) (this.getSer());
+        if (an.isAlive()) {
+            if (an.isReadyToRecolect()) {
+                return Opcion.RECOLECTAR;
+            } if (an.isReadyToDead()) {
+                return Opcion.DESTAZAR;
+            } return Opcion.ALIMENTAR;
+        } else {
+            return Opcion.LIMPIAR;
+        }
     }
 
     @Override

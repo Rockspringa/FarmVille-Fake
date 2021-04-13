@@ -21,8 +21,14 @@ import com.logic.objetos.posee_materia.productos.*;
 import com.logic.objetos.posee_materia.seres_vivos.*;
 import com.logic.objetos.posee_materia.seres_vivos.plantas.*;
 
+/**
+ * Es la clase que se encarga de crear tanto el mercado y la bodega del juego, con esta clase se pueden mostrar
+ * los items existentes que hay tanto en posesion del granjero, como disponibles para comprar.
+ */
 public class Tiega extends Frame implements MouseInputListener {
+    /** Al utilizar esta variable en el constructor de <code>Tiega</code> se creara la interfaz para una tienda */
     public static final int TIENDA = 0;
+    /** Al utilizar esta variable en el constructor de <code>Tiega</code> se creara la interfaz para una bodega */
     public static final int BODEGA = 1;
     private static final int WIDTH = 700;
     private static final int HEIGHT = 320;
@@ -37,6 +43,7 @@ public class Tiega extends Frame implements MouseInputListener {
     private JPopupMenu menu;
     private JMenuItem comprarBtn;
     private JMenuItem venderBtn;
+    private JMenuItem comerBtn;
     private JLabel[] objetos;
     private JButton btnIzq;
     private JButton btnDer;
@@ -51,6 +58,11 @@ public class Tiega extends Frame implements MouseInputListener {
     private Font jetFont;
     private int iter;
 
+    /**
+     * El constructor crea una interfaz de muestrario de imagenes, de los objetos, pero estos solo seran llenados
+     * al utilizar una de las dos variables estaticas publicas que existen dentro de esta misma clase.
+     * @param disposicion
+     */
     public Tiega(int disposicion) {
         super("", WIDTH, HEIGHT);
         if (disposicion == BODEGA) {
@@ -131,6 +143,11 @@ public class Tiega extends Frame implements MouseInputListener {
             this.venderBtn = new JMenuItem();
             this.venderBtn.addActionListener(this);
             this.menu.add(this.venderBtn);
+
+            this.comerBtn = new JMenuItem();
+            this.comerBtn.addActionListener(this);
+            this.comerBtn.setVisible(false);
+            this.menu.add(this.comerBtn);
 
             this.cantOro = new JLabel();
             this.cantOro.setFont(jetFont);
@@ -215,14 +232,20 @@ public class Tiega extends Frame implements MouseInputListener {
         }
     }
 
-    private void llenarArray(PoseeMateria ser, int arrIndex) {
-        this.objetos[arrIndex] = new JLabel(ser.getImage());
+    /**
+     * Se encarga de tomar los datos de lo que posea materia para poder crear un borde con los mismos
+     * y hacer un JLable con su nombre, llenando el array designado para ello.
+     * @param mater es el objeto del cual se tomaran los datos e imagen.
+     * @param arrIndex es la posicion en la cual se guardara el JLabel y el borde.
+     */
+    private void llenarArray(PoseeMateria mater, int arrIndex) {
+        this.objetos[arrIndex] = new JLabel(mater.getImage());
 
         this.topTittles.set(BorderFactory.createTitledBorder(this.emptyBorder,
-                                ser.getNombre(), TitledBorder.CENTER,
+                                mater.getNombre(), TitledBorder.CENTER,
                                 TitledBorder.TOP, this.jetFont, Color.WHITE), arrIndex);
         this.botTittles.set(BorderFactory.createTitledBorder(this.emptyBorder,
-                                ser.getPrecio() + " de oro",
+                                mater.getPrecio() + " de oro",
                                 TitledBorder.CENTER, TitledBorder.BOTTOM,
                                 this.jetFont, Color.BLACK), arrIndex);
 
@@ -234,8 +257,17 @@ public class Tiega extends Frame implements MouseInputListener {
         this.panelTienda.add(this.objetos[arrIndex]);
     }
 
+    /**
+     * Modificacion de un JPanel para que pueda mostrar una imagen de fondo.
+     */
     private class JImagePanel extends JPanel {
-        BufferedImage img;
+        private final BufferedImage img;
+
+        /**
+         * Arma el JPanel con su imagen de fondo.
+         * @param lm es el layout a utilizar dentro del JPanel.
+         * @param img es la imagen de fondo a utilizar, no se puede cambiar.
+         */
         public JImagePanel(LayoutManager lm, BufferedImage img) {
             super(lm);
             this.img = img;
@@ -248,6 +280,11 @@ public class Tiega extends Frame implements MouseInputListener {
         }
     }
 
+    /**
+     * Al pasarle un archivo, siendo una imagen, leera el contenido de imagen del archivo.
+     * @param arch es el archivo a pasar a BufferedImage.
+     * @return un BufferedImage de lograrse leer el archivo o null de lo contrario.
+     */
     private BufferedImage getImage(File arch) {
         try {
             return ImageIO.read(arch);
@@ -258,6 +295,7 @@ public class Tiega extends Frame implements MouseInputListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // Boton para comprar en el mercado
         if (e.getSource() == comprarBtn) {
             if (Granja.bob.isEnough(this.lblClicked.getPrecio())) {
                 if (this.lblClicked instanceof Barco) {
@@ -268,11 +306,19 @@ public class Tiega extends Frame implements MouseInputListener {
                     Granja.bob.addSemilla(new Arbol((Arbol) (this.lblClicked)));
                 } else if (this.lblClicked instanceof Cultivo) {
                     Granja.bob.addSemilla(new Cultivo((Cultivo) (this.lblClicked)));
+                } else if (this.lblClicked instanceof Fertilizante) {
+                    Granja.bob.addProducto(new Fertilizante((Fertilizante) (this.lblClicked)));
+                } else if (this.lblClicked instanceof Alimento) {
+                    Granja.bob.addProducto(new Alimento((Alimento) (this.lblClicked)));
+                } else if (this.lblClicked instanceof Producto) {
+                    Granja.bob.addProducto(new Producto((Producto) (this.lblClicked)));
                 } Granja.bob.setOro(this.lblClicked.getPrecio());
             } else {
                 JOptionPane.showMessageDialog(this, this.pocoOro, "Oro insuficiente", JOptionPane.ERROR_MESSAGE);
             } this.lblClicked = null;
-        } if (e.getSource() == venderBtn) {
+        }
+        // Venta de objetos en la bodega
+        if (e.getSource() == venderBtn) {
             int dineroAnterior = Granja.bob.getOro();
             try {
                 if (this.lblClicked instanceof Animal) {
@@ -297,20 +343,44 @@ public class Tiega extends Frame implements MouseInputListener {
             this.llenarPanel(iter, Granja.bob.getCrias(), Granja.bob.getSemillas(), Granja.bob.getBodega());
             this.panelTienda.revalidate();
             this.panelTienda.repaint();
-        } if (e.getSource() == btnDer) {
+        }
+        // Boton para comprar en la bodega
+        if (e.getSource() == comerBtn) {
+            int vidaAnterior = Granja.bob.getVida();
+            try {
+                Granja.bob.getBodega().pop((Producto) (this.lblClicked));
+                Granja.bob.alimentarse((Producto) (this.lblClicked));
+                this.cantOro.setText("Te has curado, antes tenias " + vidaAnterior
+                            + " de vida, ahora tenes " + Granja.bob.getVida()
+                            + " puntos de vida.");
+                JOptionPane.showMessageDialog(this, this.cantOro, "Cantidad de vida",
+                            JOptionPane.INFORMATION_MESSAGE);
+            } catch (InvalidAttributeValueException error) {
+                JOptionPane.showMessageDialog(this, "Ocurrio un error encontrando "
+                            + "el objeto seleccionado, pruebe mas tarde.", "Error 404, Not Found",
+                            JOptionPane.ERROR_MESSAGE);
+            }
+            this.panelTienda.removeAll();
+            this.llenarPanel(iter, Granja.bob.getCrias(), Granja.bob.getSemillas(), Granja.bob.getBodega());
+            this.panelTienda.revalidate();
+            this.panelTienda.repaint();
+        }
+        // Boton para pasar a la siguiente pagina
+        if (e.getSource() == btnDer) {
             Array<Animal> arAni = null;
             Array<Planta> arPla = null;
             Array<Producto> arPro = null;
-            if (this.getTitle() == "Mercado") {
+            if (this.getTitle().equals("Mercado")) {
                 arAni = Granja.getAnimales();
                 arPla = Granja.getPlantas();
                 arPro = Granja.getProductos();
-            } else if (this.getTitle() == "Bodega") {
+            } else if (this.getTitle().equals("Bodega")) {
                 arAni = Granja.bob.getCrias();
                 arPla = Granja.bob.getSemillas();
                 arPro = Granja.bob.getBodega();
             }
 
+            int iterAnterior = iter;
             int index = (iter + 1) * 10;
             index -= arAni.length();
             index -= arPla.length();
@@ -325,7 +395,7 @@ public class Tiega extends Frame implements MouseInputListener {
                 iter = 0;
                 this.llenarPanel(iter, arAni, arPla, arPro);
             }
-            if (iter != 0 || index < 0) {
+            if (iterAnterior != 0 || index < 0) {
                 this.panelTienda.revalidate();
                 this.panelTienda.repaint();
             }
@@ -333,16 +403,17 @@ public class Tiega extends Frame implements MouseInputListener {
             Array<Animal> arAni = null;
             Array<Planta> arPla = null;
             Array<Producto> arPro = null;
-            if (this.getTitle() == "Mercado") {
+            if (this.getTitle().equals("Mercado")) {
                 arAni = Granja.getAnimales();
                 arPla = Granja.getPlantas();
                 arPro = Granja.getProductos();
-            } else if (this.getTitle() == "Bodega") {
+            } else if (this.getTitle().equals("Bodega")) {
                 arAni = Granja.bob.getCrias();
                 arPla = Granja.bob.getSemillas();
                 arPro = Granja.bob.getBodega();
             }
 
+            int iterAnterior = iter;
             int index = (iter + 1) * 10;
             index -= arAni.length();
             index -= arPla.length();
@@ -370,7 +441,7 @@ public class Tiega extends Frame implements MouseInputListener {
                     } numSumado++;
                 }
             }
-            if (iter > 0 || index < 0) {
+            if (iterAnterior > 0 || index < 0) {
                 this.panelTienda.revalidate();
                 this.panelTienda.repaint();
             }
@@ -416,14 +487,14 @@ public class Tiega extends Frame implements MouseInputListener {
             Array<Animal> arAni = null;
             Array<Planta> arPla = null;
             Array<Producto> arPro = null;
-            if (this.getTitle() == "Mercado") {
+            if (this.getTitle().equals("Mercado")) {
                 arAni = Granja.getAnimales();
                 arPla = Granja.getPlantas();
                 arPro = Granja.getProductos();
                 this.comprarBtn.setBackground(this.menuItemOriginalColor);
                 this.comprarBtn.setForeground(Color.BLACK);
                 this.comprarBtn.setIcon(null);
-            } else if (this.getTitle() == "Bodega") {
+            } else if (this.getTitle().equals("Bodega")) {
                 arAni = Granja.bob.getCrias();
                 arPla = Granja.bob.getSemillas();
                 arPro = Granja.bob.getBodega();
@@ -445,13 +516,18 @@ public class Tiega extends Frame implements MouseInputListener {
                 this.lblClicked = arPro.get(indexEv - arAni.length() - arPla.length());
             }
 
-            if (this.getTitle() == "Mercado"
+            if (this.getTitle().equals("Mercado")
                             && !Granja.bob.isEnough(this.lblClicked.getPrecio())) {
                 this.comprarBtn.setBackground(new Color(163, 184, 204));
                 this.comprarBtn.setForeground(Color.RED);
                 this.comprarBtn.setIcon(Images.ERROR_IMAGE);
-            } else if (this.getTitle() == "Bodega") {
-                this.venderBtn.setText("Vender por " + this.lblClicked.getPrecio());
+            } else if (this.getTitle().equals("Bodega")) {
+                this.venderBtn.setText("Vender por " + this.lblClicked.getPrecio() + " de oro.");
+                if (this.lblClicked instanceof Alimento) {
+                    Alimento alim = (Alimento) (this.lblClicked);
+                    this.comerBtn.setText("Recuperar " + alim.getVidaRecuperable() + " de vida.");
+                    this.comerBtn.setVisible(true);
+                }
             }
             menu.show(e.getComponent(), e.getX(), e.getY());
         }

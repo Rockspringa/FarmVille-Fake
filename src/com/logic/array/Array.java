@@ -32,7 +32,7 @@ public class Array<Tipo> {
             Tipo[] arrAux = (Tipo[]) (new Object[this.maxTamaño]);
             for (int x = 0; x < this.indexActual; x++) {
                 arrAux[x] = this.datos[x];
-            } arrAux[this.indexActual] = dato;
+            } arrAux[this.indexActual++] = dato;
             this.datos = arrAux;
         }
     }
@@ -66,7 +66,8 @@ public class Array<Tipo> {
             dato = this.datos[index];
             for (int x = index; x < indexActual - 1; x++) {
                 this.datos[x] = this.datos[x + 1];
-            } this.datos[this.indexActual--] = null;
+            }
+            this.datos[--this.indexActual] = null;
             if (this.indexActual < this.maxTamaño - 10) {
                 this.maxTamaño -= 10;
             }
@@ -86,7 +87,7 @@ public class Array<Tipo> {
      */
     public Tipo pop(Tipo dato) throws InvalidAttributeValueException {
         for (int x = 0; x < this.indexActual; x++) {
-            if (datos[x] == dato) {
+            if (datos[x].equals(dato)) {
                 return this.pop(x);
             }
         }
@@ -105,7 +106,7 @@ public class Array<Tipo> {
             dato = datos[0];
             for (int x = 0; x < this.indexActual - 1; x++) {
                 this.datos[x] = this.datos[x + 1];
-            } this.datos[this.indexActual--] = null;
+            } this.datos[--this.indexActual] = null;
             if (this.indexActual < this.maxTamaño - 10) {
                 this.maxTamaño -= 10;
             }
@@ -124,7 +125,7 @@ public class Array<Tipo> {
         Tipo dato = null;
         if (indexActual > 0) {
             dato = this.datos[indexActual - 1];
-            this.datos[indexActual--] = null;
+            this.datos[--indexActual] = null;
             if (this.indexActual < this.maxTamaño - 10) {
                 this.maxTamaño -= 10;
             }
@@ -157,5 +158,19 @@ public class Array<Tipo> {
      */
     public int length() {
         return this.indexActual;
+    }
+
+    public boolean contains(Tipo dato) {
+        boolean contains = false;
+        if (dato == null) {
+            contains = false;
+        } else {
+            for (int x = 0; x < this.indexActual; x++) {
+                if (dato == this.datos[x]) {
+                    contains = true;
+                }
+            }
+        }
+        return contains;
     }
 }

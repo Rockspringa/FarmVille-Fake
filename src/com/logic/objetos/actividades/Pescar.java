@@ -3,6 +3,7 @@ package com.logic.objetos.actividades;
 import javax.swing.ImageIcon;
 
 import com.exec.Granja;
+import com.logic.Opcion;
 import com.logic.objetos.*;
 import com.gui.images.Images;
 import com.logic.objetos.posee_materia.*;
@@ -70,5 +71,24 @@ public class Pescar extends Actividad {
         return (tiempoPescando % 10 == 0)
                 ? Images.BARCO_MAS_IMAGE
                 : barco.getImage();
+    }
+
+    @Override
+    public Opcion getOpcion(Actividad act) {
+        if (act instanceof Pescar) {
+            if (act.getArea() != null && this.getArea() != null) {
+                return Opcion.QUITAR;
+            }
+        } return Opcion.NADA;
+    }
+
+    @Override
+    public Opcion getOpcion() {
+        return Opcion.QUITAR;
+    }
+
+    @Override
+    public SerVivo getSer() {
+        return null;
     }
 }

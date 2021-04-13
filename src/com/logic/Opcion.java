@@ -1,0 +1,5 @@
+package com.logic;
+
+public enum Opcion {
+    FERTILIZAR, ALIMENTAR, COSECHAR, DESTAZAR, QUITAR, LIMPIAR, RECOLECTAR, NADA
+}

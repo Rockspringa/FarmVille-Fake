@@ -8,7 +8,7 @@ public abstract class Suelo implements PoseeMateria {
     private ImageIcon image;
     private Actividad actividad;
     private static int cantSuelos = 0;
-    private static final int precio = 10;
+    private static final int precio = 20;
 
     public Suelo(ImageIcon image) {
         this.addImage(image);

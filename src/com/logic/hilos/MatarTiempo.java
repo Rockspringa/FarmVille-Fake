@@ -17,8 +17,10 @@ public class MatarTiempo extends Thread {
             arrSuelos = Granja.getParcelas();
             for (Suelo[] parcelas : arrSuelos) {
                 for (Suelo parc : parcelas) {
-                    if (parc != null && parc.getActividad() != null)
+                    if (parc != null && parc.getActividad() != null){
                         parc.getActividad().pasoTiempo();
+                        Verdugo.getJuego().refreshImages();
+                    }
                 }
             }
         }

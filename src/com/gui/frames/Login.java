@@ -8,7 +8,10 @@ import com.gui.Frame;
 import com.exec.Granja;
 import com.logic.objetos.posee_materia.seres_vivos.*;
 
-
+/**
+ * El login creara al granjero que se usara durante toda la vida del porgrama, toma los datos del
+ * usuario y da paso al menu principal del juego.
+ */
 public class Login extends Frame implements FocusListener {
     private JLabel apodoLbl;
     private JLabel nombreLbl;
@@ -16,6 +19,9 @@ public class Login extends Frame implements FocusListener {
     private JTextField nombreTxtF;
     private JButton btnCrear;
 
+    /**
+     * Crea toda la interfaz del login.
+     */
     public Login() {
         super("Creando granjero...", 350, 205);
 
@@ -43,6 +49,7 @@ public class Login extends Frame implements FocusListener {
         this.add(btnCrear);
     }
 
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnCrear) {
             if (!nombreTxtF.getText().equals("") && !apodoTxtF.getText().equals("")) {

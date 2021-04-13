@@ -9,6 +9,10 @@ import com.gui.Frame;
 import com.gui.images.Images;
 import com.logic.hilos.*;
 
+/**
+ * Es la ventana que se encarga de manejar el direccionamiento hacia los distintos JFrames, al frame para
+ * jugar, al frame de la creacion de nuevos animales, plantas y objetos, y al JFrame de las estadisticas.
+ */
 public class Principal extends Frame {
     private JLabel granjero;
     private JLabel texto;
@@ -17,6 +21,9 @@ public class Principal extends Frame {
     private JButton juegoBtn;
     private JButton diosBtn;
 
+    /**
+     * Diseña toda la interfaz ayudandose de layouts y de distintos componentes.
+     */
     public Principal() {
         super("FarmFake");
         this.getContentPane().setLayout(new BorderLayout());

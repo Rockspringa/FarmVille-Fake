@@ -91,4 +91,19 @@ public abstract class Planta implements SerVivo {
     public int getPrecio() {
         return precioSemilla;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        } else if (obj instanceof Planta
+                    && obj.getClass().getSimpleName().equals(this.getClass().getSimpleName())) {
+            Planta objP = (Planta) (obj);
+            if (objP.getNombre().equals(this.getNombre())
+                        && objP.getPrecio() == this.getPrecio()
+                        && objP.getCantSemillas() == this.getCantSemillas()) {
+                return true;
+            }
+        } return false;
+    }
 }

@@ -4,11 +4,11 @@ import com.exec.Granja;
 import com.gui.frames.Juego;
 
 public class Verdugo extends Thread {
-    public Verdugo() {}
+    private static Juego juego = null;
     
     @Override
     public void run() {
-        Juego juego = new Juego();
+        juego = new Juego();
         Granja.bob.newGame();
         juego.seeIt();
         new MatarTiempo().start();
@@ -24,5 +24,9 @@ public class Verdugo extends Thread {
         }
         juego.dispose();
         Granja.ventanaPrincipal.setVisible(true);
+    }
+
+    public static Juego getJuego() {
+        return juego;
     }
 }

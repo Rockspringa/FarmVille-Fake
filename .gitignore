@@ -1,3 +1,5 @@
 bin
 .classpath
 .vscode
+.idea
+FarmFake.iml

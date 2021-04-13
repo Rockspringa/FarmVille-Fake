@@ -2,13 +2,25 @@ package com.logic.objetos.posee_materia.productos;
 
 import javax.swing.ImageIcon;
 
+import com.gui.images.Images;
 import com.logic.objetos.posee_materia.*;
 
-
+/**
+ * Los alimentos tienen distintas caracteristicas, unos pueden ser comidos por unos animales y otros no,
+ * recuperaran una cantidad de vida distinta cada uno, a menos que se coloque la misma.
+ */
 public class Alimento extends Producto {
     private final boolean paraOmnivoro;
     private final int vidaRecuperable;
 
+    /**
+     * Crea un Alimento desde cero.
+     * @param precio el coste que tendra.
+     * @param vidaRecuperable la vida que recuperara a quien ose comerlo.
+     * @param paraOmnivoro limita a quien puede comerlo, true solo omnivoros y false solo herbivoros.
+     * @param nombre el nombre que portara y horara.
+     * @param image la imagen que lo representara.
+     */
     public Alimento(int precio, int vidaRecuperable, boolean paraOmnivoro,
                     String nombre, ImageIcon image) {
         super(precio, nombre, image);
@@ -16,6 +28,23 @@ public class Alimento extends Producto {
         this.paraOmnivoro = paraOmnivoro;
     }
 
+    /**
+     * Alimento con dos posibles opciones predefinidas de imagen, para omnivoro y herbivoro.
+     * @param precio el coste que tendra el alimento.
+     * @param vidaRecuperable la vida que recuperara.
+     * @param paraOmnivoro para cual de los dos sera, omnivoro (true) o herbivoro (false).
+     * @param nombre el identificador en forma de letras y numero, caracteres en general.
+     */
+    public Alimento(int precio, int vidaRecuperable, boolean paraOmnivoro, String nombre) {
+        super(precio, nombre, (paraOmnivoro) ? Images.CARNE_IMAGE : Images.HONGO_IMAGE);
+        this.vidaRecuperable = vidaRecuperable;
+        this.paraOmnivoro = paraOmnivoro;
+    }
+
+    /**
+     * Imita todos los atributos del Alimento ingresado, siendo una nueva instancia.
+     * @param oldAlimento
+     */
     public Alimento(Alimento oldAlimento) {
         super(oldAlimento);
         this.vidaRecuperable = oldAlimento.vidaRecuperable;

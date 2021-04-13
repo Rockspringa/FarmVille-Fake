@@ -1,6 +1,7 @@
 package com.exec;
 
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 import com.gui.Frame;
 import com.gui.frames.*;
@@ -11,6 +12,7 @@ import com.logic.objetos.posee_materia.suelos.*;
 import com.logic.objetos.posee_materia.productos.*;
 import com.logic.objetos.posee_materia.seres_vivos.*;
 import com.logic.objetos.posee_materia.seres_vivos.plantas.*;
+import com.logic.objetos.posee_materia.productos.alimentos.*;
 
 public class Granja {
     public static Frame ventanaPrincipal;
@@ -25,15 +27,23 @@ public class Granja {
         Granja.animales = new Array<Animal>();
         Granja.productos = new Array<Producto>();
         productos.add(new Barco());
-        addCultivo("Maiz", 3, 3, 15, 10, 3, new Producto(5, "Maiz", Images.MAIZ_IMAGE));
-        addArbol("Manzano", 3, 5, 7, 25, 18, 4, new Producto(3, "Manzana", Images.MANZANA_IMAGE));
-        //animales.add((new Animal("Vaca")));
-        //animales.add((new Animal("Gallina")));
-        new Login().seeIt();
+        productos.add(new Fertilizante(5, 1, "Basico"));
+        productos.add(new Fertilizante(10, 2, "Suprem"));
+        productos.add(new Fertilizante(25, 5, "Fert de Oro"));
+        addCultivo("Maiz", 3, 3, 15, 10, 3, Cultivo.MAIZ);
+        addArbol("Manzano", 3, 5, 7, 25, 18, 4, Arbol.MANZANA);
+        animales.add((new Animal("Vaca")));
+        animales.add((new Animal("Gallina", 1)));
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new Login().seeIt();
+            }
+        });
     }
 
     public static void addCultivo(String name, int cantSemillas,int precioSemilla,
-                int deadline, int cosechaTime, int cantProdCosecha, Producto producto) {
+                int deadline, int cosechaTime, int cantProdCosecha, Grano producto) {
     
         plantas.add(new Cultivo(name, cantSemillas, precioSemilla, deadline,
                         cosechaTime, cantProdCosecha, producto));
@@ -41,18 +51,62 @@ public class Granja {
 
     public static void addArbol(String name, int cantCosechas, int cantSemillas,
                             int precioSemilla, int deadline, int cosechaTime,
-                            int cantProdCosecha, Producto producto) {
+                            int cantProdCosecha, Fruta producto) {
     
         plantas.add(new Arbol(name, cantCosechas, cantSemillas, precioSemilla, deadline,
                     cosechaTime, cantProdCosecha, producto));
     }
 
-    public static void addAnimal(String name, double numParcelas, int precio,
-                        boolean esOmnivoro, boolean esProductor, boolean esDestazable,
-                        Producto produce) {
+    public static void addAnimal(String nombre, double numParcelas, int precio, boolean esOmnivoro,
+                                boolean esProductor, int cantProdProd, Producto[] produceProd,
+                                double[] porcProd, boolean esDestazable, int cantProdDest,
+                                Producto[] produceDest, double[] porcDest) {
         
-        animales.add(new Animal(name, numParcelas, precio, esOmnivoro,
-                            esProductor, esDestazable, produce));
+        animales.add(new Animal(nombre, numParcelas, precio, esOmnivoro,
+                esProductor, cantProdProd, produceProd, porcProd, esDestazable,
+                cantProdDest, produceDest, porcDest));
+    }
+
+    public static void addAnimal(String nombre, double numParcelas, int precio, boolean esOmnivoro,
+                                boolean esProductor, int cantProdProd, Producto produceProd,
+                                double porcProd, boolean esDestazable, int cantProdDest,
+                                Producto produceDest, double porcDest) {
+        
+        animales.add(new Animal(nombre, numParcelas, precio, esOmnivoro, esProductor,
+                cantProdProd, produceProd, porcProd, esDestazable, cantProdDest,
+                produceDest, porcDest));
+    }
+
+    public static void addProducto(int precio, String nombre, ImageIcon image) {
+        Producto.arrProd.add(new Producto(precio, nombre, image));
+    }
+
+    public static void addProducto(int precio, String nombre) {
+        Producto.arrProd.add(new Producto(precio, nombre));
+    }
+
+    public static void addAlimento(int precio, int vidaRecuperable, boolean paraOmnivoro, String nombre, ImageIcon image) {
+        Producto.arrProd.add(new Alimento(precio, vidaRecuperable, paraOmnivoro, nombre, image));
+    }
+
+    public static void addAlimento(int precio, int vidaRecuperable, boolean paraOmnivoro, String nombre) {
+        Producto.arrProd.add(new Alimento(precio, vidaRecuperable, paraOmnivoro, nombre));
+    }
+
+    public static void addFruta(int precio, int vidaRecuperable, boolean paraOmnivoro, String nombre, ImageIcon image) {
+        Arbol.arrFruta.add(new Fruta(precio, vidaRecuperable, paraOmnivoro, nombre, image));
+    }
+
+    public static void addFruta(int precio, int vidaRecuperable, boolean paraOmnivoro, String nombre) {
+        Arbol.arrFruta.add(new Fruta(precio, vidaRecuperable, paraOmnivoro, nombre));
+    }
+
+    public static void addGrano(int precio, int vidaRecuperable, boolean paraOmnivoro, String nombre, ImageIcon image) {
+        Cultivo.arrGranos.add(new Grano(precio, vidaRecuperable, paraOmnivoro, nombre, image));
+    }
+
+    public static void addGrano(int precio, int vidaRecuperable, boolean paraOmnivoro, String nombre) {
+        Cultivo.arrGranos.add(new Grano(precio, vidaRecuperable, paraOmnivoro, nombre));
     }
 
     public static ImageIcon getJParcela(int m, int n) {

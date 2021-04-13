@@ -4,6 +4,9 @@ import javax.swing.ImageIcon;
 import java.awt.Image;
 import java.io.File;
 
+/**
+ * Proporciona todas las imagenes que se utilizaran en el juego.
+ */
 public class Images {
     private static final int widthJuego = 110;
     private static final int heightJuego = 110;
@@ -88,7 +91,7 @@ public class Images {
     private static final Image CULTIVO_IM_IC = CULTIVO_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
     public static final ImageIcon CULTIVO_IMAGE = new ImageIcon(CULTIVO_IM_IC);
 
-    private static final ImageIcon CULTIVO_COSECHA_ICON = new ImageIcon("src\\com\\gui\\images\\plantas\\Cultivo_Cosecha.png");
+    private static final ImageIcon CULTIVO_COSECHA_ICON = new ImageIcon("src\\com\\gui\\images\\plantas\\Cultivo_Cosechar.png");
     private static final Image CULTIVO_COSECHA_IM_IC = CULTIVO_COSECHA_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
     public static final ImageIcon CULTIVO_COSECHA_IMAGE = new ImageIcon(CULTIVO_COSECHA_IM_IC);
 
@@ -199,4 +202,20 @@ public class Images {
     private static final ImageIcon HUEVO_ICON = new ImageIcon("src\\com\\gui\\images\\compra\\Huevo.png");
     private static final Image HUEVO_IM_IC = HUEVO_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
     public static final ImageIcon HUEVO_IMAGE = new ImageIcon(HUEVO_IM_IC);
+    
+    private static final ImageIcon CUERO_ICON = new ImageIcon("src\\com\\gui\\images\\compra\\Cuero.png");
+    private static final Image CUERO_IM_IC = CUERO_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
+    public static final ImageIcon CUERO_IMAGE = new ImageIcon(CUERO_IM_IC);
+    
+    private static final ImageIcon CARNE_ICON = new ImageIcon("src\\com\\gui\\images\\compra\\Carne.png");
+    private static final Image CARNE_IM_IC = CARNE_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
+    public static final ImageIcon CARNE_IMAGE = new ImageIcon(CARNE_IM_IC);
+    
+    private static final ImageIcon HONGO_ICON = new ImageIcon("src\\com\\gui\\images\\compra\\Hongo.png");
+    private static final Image HONGO_IM_IC = HONGO_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
+    public static final ImageIcon HONGO_IMAGE = new ImageIcon(HONGO_IM_IC);
+    
+    private static final ImageIcon FERTILIZANTE_ICON = new ImageIcon("src\\com\\gui\\images\\compra\\Fertilizante.png");
+    private static final Image FERTILIZANTE_IM_IC = FERTILIZANTE_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
+    public static final ImageIcon FERTILIZANTE_IMAGE = new ImageIcon(FERTILIZANTE_IM_IC);
 }
