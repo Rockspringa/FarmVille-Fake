@@ -1,5 +1,6 @@
 package com.logic.objetos.actividades;
 
+import javax.naming.InsufficientResourcesException;
 import javax.swing.ImageIcon;
 
 import com.logic.Opcion;
@@ -61,7 +62,7 @@ public class Sembrar extends Actividad {
     }
 
     @Override
-    public void terminarActividad(Granjero bob) {
+    public void terminarActividad(Granjero bob) throws InsufficientResourcesException {
         if (planta.isCosechable()) {
             planta.cosechar(bob);
             if (!planta.isAlive()) {

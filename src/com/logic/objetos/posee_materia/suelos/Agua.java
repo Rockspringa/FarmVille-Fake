@@ -22,6 +22,10 @@ public class Agua extends Suelo {
                     ? true : false;
     }
 
+    public static int reinciarCantSuelos() {
+        return cantAgua = 0;
+    }
+
     public static boolean lessThanNecessary() {
         if (Suelo.getCantSuelos() != 0)
             distrActual = cantAgua / Suelo.getCantSuelos();

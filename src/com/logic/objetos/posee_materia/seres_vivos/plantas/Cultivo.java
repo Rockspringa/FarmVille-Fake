@@ -46,7 +46,7 @@ public class Cultivo extends Planta {
         super(oldMata);
         this.addImage(Images.SEMILLA_IMAGE);
         this.cantProdCosecha = oldMata.cantProdCosecha;
-        this.productoCosecha = oldMata.productoCosecha;
+        this.productoCosecha = new Grano(oldMata.productoCosecha);
     }
 
     /**
@@ -64,9 +64,9 @@ public class Cultivo extends Planta {
             super.bajarVida();
             if (!isCosechable() && this.isAlive()) {
                 this.addImage(Images.CULTIVO_IMAGE);
-            } else {
+            } else if (isCosechable()) {
                 this.addImage(Images.CULTIVO_COSECHA_IMAGE);
-            } if (!this.isAlive()) {
+            } else {
                 this.addImage(Images.CULTIVO_PODRIDO_IMAGE);
             }
         }
@@ -88,11 +88,13 @@ public class Cultivo extends Planta {
 
     @Override
     public void cosechar(Granjero bob) {
-        for (int x = 0; x < cantProdCosecha; x++) {
-            if (this.productoCosecha instanceof Grano)
-                bob.addProducto(new Grano((Grano) (this.productoCosecha)));
-            else
-                bob.addProducto(new Producto(this.productoCosecha));
-        } this.morir();
+        if (this.isAlive()) {
+            for (int x = 0; x < cantProdCosecha; x++) {
+                if (this.productoCosecha instanceof Grano)
+                    bob.addProducto(new Grano((Grano) (this.productoCosecha)));
+                else
+                    bob.addProducto(new Producto(this.productoCosecha));
+            } this.morir();
+        }
     }
 }

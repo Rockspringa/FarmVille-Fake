@@ -30,10 +30,16 @@ public class Granja {
         productos.add(new Fertilizante(5, 1, "Basico"));
         productos.add(new Fertilizante(10, 2, "Suprem"));
         productos.add(new Fertilizante(25, 5, "Fert de Oro"));
-        addCultivo("Maiz", 3, 3, 15, 10, 3, Cultivo.MAIZ);
-        addArbol("Manzano", 3, 5, 7, 25, 18, 4, Arbol.MANZANA);
-        animales.add((new Animal("Vaca")));
-        animales.add((new Animal("Gallina", 1)));
+        productos.add(new Alimento(5, 3, false, "Hongo"));
+        productos.add(new Alimento(10, 5, false, "Ensalada"));
+        productos.add(new Alimento(25, 8, false, "1 UP"));
+        productos.add(new Alimento(5, 3, true, "Bistec"));
+        productos.add(new Alimento(10, 5, true, "Chuletas"));
+        productos.add(new Alimento(25, 8, true, "Cochito"));
+        addCultivo("Maiz", 3, 3, 20, 10, 3, new Grano(Cultivo.MAIZ));
+        addArbol("Manzano", 3, 5, 7, 25, 18, 4, new Fruta(Arbol.MANZANA));
+        animales.add((new Animal("Gallina")));
+        animales.add((new Animal("Vaca", 1)));
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -125,6 +131,10 @@ public class Granja {
             }
         } else {
             parcelas = null;
+            Suelo.reinciarCantSuelos();
+            Grama.reinciarCantSuelos();
+            Agua.reinciarCantSuelos();
+            Desierto.reinciarCantSuelos();
             iniciarParcela();
         }
     }
@@ -206,22 +216,6 @@ public class Granja {
     
     public static Suelo[][] getParcelas() {
         return Granja.parcelas;
-    }
-
-    public static void terminarActividad(int m, int n) {
-        if (parcelas[m][n] != null && parcelas[m][n].getActividad() != null) {
-            parcelas[m][n].getActividad().terminarActividad(bob);
-        }
-    }
-
-    public static void terminarActividad(int[] coord) {
-        Granja.terminarActividad(coord[0], coord[1]);
-    }
-
-    public static void terminarActividades(int[][] coordenadas) {
-        for (int[] coord : coordenadas) {
-            Granja.terminarActividad(coord);
-        }
     }
 
     public static Array<Animal> getAnimales() {

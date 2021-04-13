@@ -25,8 +25,7 @@ public abstract class Suelo implements PoseeMateria {
     }
 
     public void setActividad(Actividad actividad) {
-        if (this.sePuedeHacer(actividad))
-            this.actividad = actividad;
+        this.actividad = actividad;
     }
 
     public abstract boolean sePuedeHacer(Actividad act);
@@ -47,6 +46,10 @@ public abstract class Suelo implements PoseeMateria {
 
     public static int getCantSuelos() {
         return Suelo.cantSuelos;
+    }
+
+    public static int reinciarCantSuelos() {
+        return cantSuelos = 0;
     }
 
     @Override

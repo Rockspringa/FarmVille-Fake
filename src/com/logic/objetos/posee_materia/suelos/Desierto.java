@@ -23,6 +23,10 @@ public class Desierto extends Suelo{
         return false;
     }
 
+    public static int reinciarCantSuelos() {
+        return cantDesierto = 0;
+    }
+
     public static boolean lessThanNecessary() {
         if (Suelo.getCantSuelos() != 0)
             distrActual = cantDesierto / Suelo.getCantSuelos();

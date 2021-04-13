@@ -22,6 +22,10 @@ public class Grama extends Suelo {
                     ? true : false;
     }
 
+    public static int reinciarCantSuelos() {
+        return cantGrama = 0;
+    }
+
     public static boolean lessThanNecessary() {
         if (Suelo.getCantSuelos() != 0)
             distrActual = cantGrama / Suelo.getCantSuelos();

@@ -1,5 +1,6 @@
 package com.logic.objetos;
 
+import javax.naming.InsufficientResourcesException;
 import javax.swing.ImageIcon;
 
 import com.logic.Opcion;
@@ -21,7 +22,7 @@ public abstract class Actividad {
         return suelo.sePuedeHacer(this);
     }
 
-    public void limpiarCuerpo(Granjero bob) {
+    public void limpiarCuerpo(Granjero bob) throws InsufficientResourcesException {
         if (bob.isEnough(10)) {
             bob.setOro(10);
             for (Suelo parcela : area) {
@@ -53,7 +54,7 @@ public abstract class Actividad {
 
     public abstract void realizarActividad();
 
-    public abstract void terminarActividad(Granjero bob);
+    public abstract void terminarActividad(Granjero bob) throws InsufficientResourcesException;
 
     public abstract ImageIcon getImage();
 }

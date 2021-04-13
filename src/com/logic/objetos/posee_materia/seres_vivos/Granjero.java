@@ -1,7 +1,9 @@
 package com.logic.objetos.posee_materia.seres_vivos;
 
+import javax.naming.InsufficientResourcesException;
 import javax.swing.ImageIcon;
 
+import com.exec.Granja;
 import com.logic.array.Array;
 import com.logic.objetos.posee_materia.*;
 import com.logic.objetos.posee_materia.productos.*;
@@ -13,6 +15,9 @@ public class Granjero implements SerVivo {
     private Array<Animal> crias;
     private Array<Planta> semillas;
     private boolean vivo;
+    private int oroGanado = 0;
+    private int alimGener = 0;
+    private int alimConsu = 0;
     private int vida;
     private int oro;
 
@@ -23,6 +28,14 @@ public class Granjero implements SerVivo {
 
     public void addProducto(Producto producto) {
         this.bodega.add(producto);
+        if (producto instanceof Alimento) {
+            Array<Producto> prod = Granja.getProductos();
+            for (int x = 0; x < prod.length(); x++) {
+                if (producto.equals(prod.get(x))) {
+                    this.alimGener++;
+                }
+            }
+        }
     }
 
     public void addCria(Animal cria) {
@@ -50,6 +63,9 @@ public class Granjero implements SerVivo {
             this.vivo = true;
             this.vida = 200;
             this.oro = 200;
+            this.oroGanado = 0;
+            this.alimGener = 0;
+            this.alimConsu = 0;
             this.crias = new Array<Animal>();
             this.bodega = new Array<Producto>();
             this.semillas = new Array<Planta>();
@@ -60,13 +76,20 @@ public class Granjero implements SerVivo {
         return this.oro;
     }
 
-    public void setOro(int precio) {
-        this.oro = (isEnough(precio)) ? this.oro - precio
-                                    : this.oro;
+    public int getOroGanado() {
+        return this.oroGanado;
+    }
+
+    public void setOro(int precio) throws InsufficientResourcesException {
+        if (isEnough(precio))
+            this.oro -= precio;
+        else
+            throw new InsufficientResourcesException();
     }
 
     public void ganaOro(int oro) {
         this.oro += oro;
+        this.oroGanado += oro;
     }
 
     public boolean isEnough(int precio) {
@@ -81,9 +104,7 @@ public class Granjero implements SerVivo {
     @Override
     public void bajarVida() {
         if (vida <= 1) {
-            this.vida = 0;
-            this.vivo = false;
-            this.setOro(this.getOro());
+            this.morir();
         } else {
             this.vida--;
         }
@@ -107,7 +128,7 @@ public class Granjero implements SerVivo {
     public void morir() {
         this.vida = 0;
         this.vivo = false;
-        this.setOro(this.getOro());
+        this.oro = 0;
     }
 
     @Override
@@ -122,6 +143,7 @@ public class Granjero implements SerVivo {
             alim = (Alimento) (alimento);
             if (this.isAlive()) {
                 this.vida += alim.getVidaRecuperable();
+                this.alimConsu++;
             }
         }
     }
@@ -129,5 +151,13 @@ public class Granjero implements SerVivo {
     @Override
     public ImageIcon getImage() {
         return null;
+    }
+
+    public int getAlimGener() {
+        return this.alimGener;
+    }
+
+    public int getAlimConsu() {
+        return this.alimConsu;
     }
 }

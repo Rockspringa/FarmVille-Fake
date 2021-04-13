@@ -1,6 +1,7 @@
 package com.gui.frames;
 
 import javax.management.InvalidAttributeValueException;
+import javax.naming.InsufficientResourcesException;
 import javax.swing.*;
 import java.awt.event.*;
 import javax.swing.border.Border;
@@ -32,7 +33,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
     private JRadioButtonMenuItem btnSelect;
     private JScrollPane scrollable;
     private JLabel[][] tierras;
-    private JMenuItem submenuAgua;
+    private JMenuItem btnBarco;
     private JMenuItem btnAgregar;
     private JMenuItem btnTienda;
     private JMenuItem btnBodega;
@@ -48,6 +49,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
     private boolean isSelecting = false;
     private JMenu[] submenuGrama;
     private Border normalBord;
+    private Border bordReady;
     private Border bordSelect;
     private Border bordMouseOver;
     private JLabel selected;
@@ -64,6 +66,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
     private int heightPanel = 550;
     private int rowPanel = 5;
     private int colPanel = 5;
+    private int numTierrasCompradas = 0;
 
     /**
      * Modifica el tamaño del array de JLabels', pasa los JLabels' al nuevo array,
@@ -106,13 +109,13 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
                                     && tierras[m][n].getIcon() == icBloq)) {
                     tierras[m][n] = new JLabel(icGranja);
                     tierras[m][n].setOpaque(true);
+                    tierras[m][n].setFont(new Font("JetBrainsMono Nerd Font Mono", 1, 15));
+                    tierras[m][n].setForeground(Color.WHITE);
                     tierras[m][n].setBorder(normalBord);
                     tierras[m][n].addMouseListener(this);
                     tierras[m][n].addMouseMotionListener(this);
                     tierras[m][n].setVerticalAlignment(JLabel.CENTER);
                     tierras[m][n].setHorizontalAlignment(JLabel.CENTER);
-                    tierras[m][n].setVerticalTextPosition(JLabel.CENTER);
-                    tierras[m][n].setHorizontalTextPosition(JLabel.CENTER);
                 } this.panelTierras.add(tierras[m][n]);
             }
         }
@@ -167,11 +170,11 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
         this.actividades.add(this.submenuGrama[0]);
         this.actividades.add(this.submenuGrama[1]);
 
-        this.submenuAgua = new JMenuItem("Pescar");
-        this.submenuAgua.setEnabled(false);
-        this.submenuAgua.addActionListener(this);
-        this.menuItemOriginalColor = this.submenuAgua.getBackground();
-        this.actividades.add(this.submenuAgua);
+        this.btnBarco = new JMenuItem("Pescar");
+        this.btnBarco.setEnabled(false);
+        this.btnBarco.addActionListener(this);
+        this.menuItemOriginalColor = this.btnBarco.getBackground();
+        this.actividades.add(this.btnBarco);
 
         /* Creacion del menu que maneje alimentacion, fertilizacion, matanza y demas */
         this.optTierras = new JMenu("Cuidados");
@@ -191,6 +194,35 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
         this.alimentos = new JMenu("Alimentar");
         this.alimentos.setEnabled(false);
         this.optTierras.add(this.alimentos);
+
+        this.optTierras.add(new JSeparator());
+
+        this.btnQuitar = new JMenuItem("Quitar");
+        this.btnQuitar.setEnabled(false);
+        this.btnQuitar.addActionListener(this);
+        this.optTierras.add(this.btnQuitar);
+
+        this.optTierras.add(new JSeparator());
+
+        this.btnCosechar = new JMenuItem("Cosechar");
+        this.btnCosechar.setEnabled(false);
+        this.btnCosechar.addActionListener(this);
+        this.optTierras.add(this.btnCosechar);
+
+        this.btnLimpiar = new JMenuItem("Limpiar");
+        this.btnLimpiar.setEnabled(false);
+        this.btnLimpiar.addActionListener(this);
+        this.optTierras.add(this.btnLimpiar);
+
+        this.btnDestazar = new JMenuItem("Destazar");
+        this.btnDestazar.setEnabled(false);
+        this.btnDestazar.addActionListener(this);
+        this.optTierras.add(this.btnDestazar);
+
+        this.btnRecolectar = new JMenuItem("Recolectar");
+        this.btnRecolectar.setEnabled(false);
+        this.btnRecolectar.addActionListener(this);
+        this.optTierras.add(this.btnRecolectar);
 
         /* Creacion de una especie de barra para mostrar la vida del granjero y el oro del mismo. */
         this.panelVida = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
@@ -242,9 +274,10 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
         /* Creacion de panel de Tierras, llenado de Tierras y los bordes que se utilizaran
             en las Tierras */
         this.panelTierras = new JPanel();
-        normalBord = BorderFactory.createLineBorder(Color.GRAY, 3, false);
-        bordSelect = BorderFactory.createLineBorder(Color.RED, 3, false);
-        bordMouseOver = BorderFactory.createLineBorder(Color.BLUE, 3, false);
+        normalBord = BorderFactory.createLineBorder(Color.WHITE, 3, false);
+        bordReady = BorderFactory.createLineBorder(Color.BLUE, 3, false);
+        bordSelect = BorderFactory.createLineBorder(Color.ORANGE, 3, false);
+        bordMouseOver = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 3, false);
 
         Granja.iniciarParcela();
         this.tierras = new JLabel[5][5];
@@ -260,6 +293,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
     public void actionPerformed(ActionEvent e) {
         // Comprar parcelas
         if (e.getSource() == btnAgregar) {
+            this.numTierrasCompradas++;
             if (Granja.bob.isEnough(Granja.getParcelas()[0][0].getPrecio())) {
                 if (Granja.newParcela()) {
                     if (rowPanel == 5)
@@ -294,7 +328,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
             tiendaBodega.seeIt();
         }
         // Empezar a pescar
-        if (e.getSource() == submenuAgua) {
+        if (e.getSource() == btnBarco) {
             for (int m = 0; m < tierras.length; m++) {
                 for (int n = 0; n < tierras[m].length; n++) {
                     if (tierras[m][n].getBorder() == bordSelect) {
@@ -311,12 +345,118 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
                 }
             } this.btnSelect.setSelected(false);
             this.refreshImages();
-        } if (e.getSource() instanceof JMenuItemBag) {
+        }
+        // Quita los barcos que hayan
+        if (e.getSource() == btnQuitar) {
+            for (int m = 0; m < tierras.length; m++) {
+                for (int n = 0; n < tierras[m].length; n++) {
+                    if (tierras[m][n].getBorder() == bordSelect) {
+                        Suelo suelo = Granja.getParcelas()[m][n];
+                        try {
+                            suelo.getActividad().terminarActividad(Granja.bob);
+                        } catch (InsufficientResourcesException exec) {
+                            JOptionPane.showMessageDialog(this, "Este mensaje no aparecera"
+                                        + ", espero", "404", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        }
+                        tierras[m][n].setBorder(normalBord);
+                    }
+                }
+            } this.btnSelect.setSelected(false);
+            this.refreshImages();
+        }
+        // Cosecha las plantas, obtiene sus productos y se los da al granjero
+        if (e.getSource() == btnCosechar) {
+            for (int m = 0; m < tierras.length; m++) {
+                for (int n = 0; n < tierras[m].length; n++) {
+                    if (tierras[m][n].getBorder() == bordSelect) {
+                        Suelo suelo = Granja.getParcelas()[m][n];
+                        try {
+                            suelo.getActividad().terminarActividad(Granja.bob);
+                        } catch (InsufficientResourcesException exec) {
+                            JOptionPane.showMessageDialog(this, "No posees suficiente oro."
+                                        + " Se pudrio antes de que la cosecharas.", "404",
+                                        JOptionPane.ERROR_MESSAGE);
+                            break;
+                        }
+                        tierras[m][n].setBorder(normalBord);
+                    }
+                }
+            } this.btnSelect.setSelected(false);
+            this.refreshImages();
+            this.refreshTexts();
+        }
+        // Limpia los terrenos que esten con cuerpos muertos o plantas podridads
+        if (e.getSource() == btnLimpiar) {
+            for (int m = 0; m < tierras.length; m++) {
+                for (int n = 0; n < tierras[m].length; n++) {
+                    if (tierras[m][n].getBorder() == bordSelect) {
+                        Suelo suelo = Granja.getParcelas()[m][n];
+                        try {
+                            suelo.getActividad().terminarActividad(Granja.bob);
+                        } catch (InsufficientResourcesException exec) {
+                            JOptionPane.showMessageDialog(this, "No posees suficiente oro."
+                                        + "\nNo podras usar la tierra hasta que la limpies.",
+                                        "Error 404, oro not Found", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        }
+                        tierras[m][n].setBorder(normalBord);
+                    }
+                }
+            } this.btnSelect.setSelected(false);
+            this.refreshImages();
+            this.refreshTexts();
+        }
+        // Destaza a los animales destazables y obtiene sus productos.
+        if (e.getSource() == btnDestazar) {
+            for (int m = 0; m < tierras.length; m++) {
+                for (int n = 0; n < tierras[m].length; n++) {
+                    if (tierras[m][n].getBorder() == bordSelect) {
+                        Suelo suelo = Granja.getParcelas()[m][n];
+                        try {
+                            suelo.getActividad().terminarActividad(Granja.bob);
+                        } catch (InsufficientResourcesException exec) {
+                            JOptionPane.showMessageDialog(this, "No posees suficiente oro."
+                                        + "\nAlgun animal murio antes de que lo mataras.",
+                                        "Error 404, oro not Found", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        }
+                        tierras[m][n].setBorder(normalBord);
+                    }
+                }
+            } this.btnSelect.setSelected(false);
+            this.refreshImages();
+            this.refreshTexts();
+        }
+        // Recolecta los productos que genero el animal.
+        if (e.getSource() == btnRecolectar) {
+            for (int m = 0; m < tierras.length; m++) {
+                for (int n = 0; n < tierras[m].length; n++) {
+                    if (tierras[m][n].getBorder() == bordSelect) {
+                        Suelo suelo = Granja.getParcelas()[m][n];
+                        try {
+                            suelo.getActividad().terminarActividad(Granja.bob);
+                        } catch (InsufficientResourcesException exec) {
+                            JOptionPane.showMessageDialog(this, "No posees suficiente oro."
+                                        + "\nAlgun animal murio antes de que recolectaras sus productos.",
+                                        "Error 404, oro not Found", JOptionPane.ERROR_MESSAGE);
+                            break;
+                        }
+                        tierras[m][n].setBorder(normalBord);
+                    }
+                }
+            } this.btnSelect.setSelected(false);
+            this.refreshImages();
+        }
+        // Todas las acciones que requieren de escoger un producto, animal o planta.
+        if (e.getSource() instanceof JMenuItemBag) {
             JMenuItemBag bag = (JMenuItemBag) (e.getSource());
+            Array<JLabel> arrLbl = new Array<JLabel>();
             Array<Suelo> arrAux = new Array<Suelo>();
             for (int m = 0; m < tierras.length; m++) {
                 for (int n = 0; n < tierras[m].length; n++) {
                     if (tierras[m][n].getBorder() == bordSelect) {
+                        arrLbl.add(this.tierras[m][n]);
                         arrAux.add(Granja.getParcelas()[m][n]);
                         tierras[m][n].setBorder(normalBord);
                     }
@@ -330,6 +470,9 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
                     try {
                         arrAux.get(m).setActividad(new Sembrar(Granja.bob.getSemillas().pop(pl),
                                     arrAux.get(m)));
+                        arrLbl.get(m).setText(pl.getNombre());
+                        arrLbl.get(m).setVerticalTextPosition(JLabel.CENTER);
+                        arrLbl.get(m).setHorizontalTextPosition(JLabel.CENTER);
                     } catch (InvalidAttributeValueException exc) {
                         JOptionPane.showMessageDialog(this, "Ya no tienes mas semillas del mismo "
                                     + "tipo.", "Error 404", JOptionPane.ERROR_MESSAGE);
@@ -345,6 +488,9 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
                     try {
                         arrAux.get(m).setActividad(new Crianza(Granja.bob.getCrias().pop(an),
                                     arrAux.get(m)));
+                        arrLbl.get(m).setText(an.getNombre());
+                        arrLbl.get(m).setVerticalTextPosition(JLabel.CENTER);
+                        arrLbl.get(m).setHorizontalTextPosition(JLabel.CENTER);
                     } catch (InvalidAttributeValueException exc) {
                         JOptionPane.showMessageDialog(this, "Ya no tienes mas crias del mismo "
                                     + "animal.", "Error 404", JOptionPane.ERROR_MESSAGE);
@@ -420,7 +566,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
         PoseeMateria item = null;
         boolean agregar = true;
         boolean error = true;
-        this.submenuAgua.removeAll();
+        this.btnBarco.removeAll();
         this.submenuGrama[0].removeAll();
         this.submenuGrama[1].removeAll();
         this.fertilizantes.removeAll();
@@ -432,23 +578,25 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
 
         for (int x = 0; x < Granja.bob.getBodega().length(); x++) {
             item = Granja.bob.getBodega().get(x);
-            name = item.getNombre();
+            name = (item != null) ? item.getNombre() : null;
 
             if (Granja.bob.getBodega().get(x) instanceof Barco) {
-                this.submenuAgua.setBackground(this.menuItemOriginalColor);
-                this.submenuAgua.setForeground(Color.BLACK);
-                this.submenuAgua.setIcon(null);
+                this.btnBarco.setBackground(this.menuItemOriginalColor);
+                this.btnBarco.setForeground(Color.BLACK);
+                this.btnBarco.setIcon(null);
                 agregar = false;
                 error = false;
             } else if (!(Granja.bob.getBodega().get(x) instanceof Fertilizante))
                 agregar = false;
             else {
-                for (int y = 0; y < this.subMenuFertilizantes.length(); y++) {
-                    if (this.subMenuFertilizantes.get(y).getText().equals(name)) {
-                        agregar = false;
-                        break;
-                    } else
-                        agregar = true;
+                if (name != null) {
+                    for (int y = 0; y < this.subMenuFertilizantes.length(); y++) {
+                        if (this.subMenuFertilizantes.get(y).getText().equals(name)) {
+                            agregar = false;
+                            break;
+                        } else
+                            agregar = true;
+                    }
                 }
             } if (agregar) {
                 this.subMenuFertilizantes.add(new JMenuItemBag(name, item));
@@ -457,25 +605,27 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
                 index++;
             }
             if (error) {
-                this.submenuAgua.setBackground(new Color(163, 184, 204));
-                this.submenuAgua.setForeground(Color.RED);
-                this.submenuAgua.setIcon(Images.ERROR_IMAGE);
+                this.btnBarco.setBackground(new Color(163, 184, 204));
+                this.btnBarco.setForeground(Color.RED);
+                this.btnBarco.setIcon(Images.ERROR_IMAGE);
             }
         }
         
         index = 0;
         for (int x = 0; x < Granja.bob.getBodega().length(); x++) {
             item = Granja.bob.getBodega().get(x);
-            name = item.getNombre();
+            name = (item != null) ? item.getNombre() : null;
             if (!(Granja.bob.getBodega().get(x) instanceof Alimento))
                 agregar = false;
             else {
-                for (int y = 0; y < this.subMenuAlimentos.length(); y++) {
-                    if (this.subMenuAlimentos.get(y).getText().equals(name)) {
-                        agregar = false;
-                        break;
-                    } else
-                        agregar = true;
+                if (name != null) {
+                    for (int y = 0; y < this.subMenuAlimentos.length(); y++) {
+                        if (this.subMenuAlimentos.get(y).getText().equals(name)) {
+                            agregar = false;
+                            break;
+                        } else
+                            agregar = true;
+                    }
                 }
             } if (agregar) {
                 this.subMenuAlimentos.add(new JMenuItemBag(name, item));
@@ -488,6 +638,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
         index = 0;
         for (int x = 0; x < Granja.bob.getSemillas().length(); x++) {
             item = Granja.bob.getSemillas().get(x);
+            if (item == null) continue;
             name = item.getNombre();
             for (int y = 0; y < this.subMenuPlantas.length(); y++) {
                 if (this.subMenuPlantas.get(y).getText().equals(name)) {
@@ -506,6 +657,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
         index = 0;
         for (int x = 0; x < Granja.bob.getCrias().length(); x++) {
             item = Granja.bob.getCrias().get(x);
+            if (item == null) continue;
             name = item.getNombre();
             for (int y = 0; y < this.subMenuAnimales.length(); y++) {
                 if (this.subMenuAnimales.get(y).getText().equals(name)){
@@ -521,8 +673,8 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
             }
         }
         
-        this.submenuAgua.revalidate();
-        this.submenuAgua.repaint();
+        this.btnBarco.revalidate();
+        this.btnBarco.repaint();
         this.submenuGrama[0].revalidate();
         this.submenuGrama[0].repaint();
         this.submenuGrama[1].revalidate();
@@ -533,7 +685,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
         this.alimentos.repaint();
 
         if (error) {
-            this.submenuAgua.setEnabled(false);
+            this.btnBarco.setEnabled(false);
         } if (this.subMenuFertilizantes.length() != 0) {
             this.fertilizantes.setEnabled(true);
         } else {
@@ -561,7 +713,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
             tiendaBodega = null;
         }
         Granja.bob.morir();
-        Granja.ventanaPrincipal.setVisible(true);
+        new Registro().seeIt();
     }
 
     /**
@@ -583,7 +735,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
             } width += 15;
         }
         this.panelOro.setPreferredSize(new Dimension(width, 40));
-        this.cantOro[1].setText(String.valueOf(Granja.bob.getOro()));
+        this.cantOro[0].setText(String.valueOf(Granja.bob.getOro()));
         if (!Granja.bob.isEnough(Granja.getParcelas()[0][0].getPrecio())) {
             this.btnAgregar.setBackground(new Color(163, 184, 204));
             this.btnAgregar.setForeground(Color.RED);
@@ -650,8 +802,10 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
             lblEvent.setBorder(bordSelect);
             this.selected = lblEvent;
             sonIguales = true;
-        }        
+        } refreshButtons(sonIguales);
+    }
 
+    public void refreshButtons(boolean sonIguales) {
         JLabel anterior = null;
         Suelo sueloAnt = null;
         Suelo[][] suelosR = Granja.getParcelas();
@@ -664,7 +818,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
                 if (tierras[m][n].getBorder() == this.bordSelect) {
                     Actividad act2 = suelosR[m][n].getActividad();
                     if (act != null && act2 != null && actExist) {
-                        if (optReali == Opcion.NADA || optReali != act2.getOpcion(act)) {
+                        if (optReali != act2.getOpcion(act)) {
                             optReali = null;
                             actExist = false;
                         }
@@ -698,21 +852,71 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
             if (anterior.getIcon() == Images.GRAMA_IMAGE) {
                 this.submenuGrama[0].setEnabled(true);
                 this.submenuGrama[1].setEnabled(true);
-                this.submenuAgua.setEnabled(false);
+                this.btnBarco.setEnabled(false);
                 this.optTierras.setEnabled(false);
             } else if (anterior.getIcon() == Images.AGUA_IMAGE) {
                 this.submenuGrama[0].setEnabled(false);
                 this.submenuGrama[1].setEnabled(false);
-                this.submenuAgua.setEnabled(true);
+                this.btnBarco.setEnabled(true);
                 this.optTierras.setEnabled(false);
             } else if (actExist) {
                 this.actividades.setEnabled(false);
                 if (optReali == Opcion.FERTILIZAR) {
                     this.fertilizantes.setEnabled(true);
+                    this.btnQuitar.setEnabled(false);
                     this.alimentos.setEnabled(false);
+                    this.btnCosechar.setEnabled(false);
+                    this.btnLimpiar.setEnabled(false);
+                    this.btnDestazar.setEnabled(false);
+                    this.btnRecolectar.setEnabled(false);
                 } else if (optReali == Opcion.ALIMENTAR) {
                     this.fertilizantes.setEnabled(false);
+                    this.btnQuitar.setEnabled(false);
                     this.alimentos.setEnabled(true);
+                    this.btnCosechar.setEnabled(false);
+                    this.btnLimpiar.setEnabled(false);
+                    this.btnDestazar.setEnabled(false);
+                    this.btnRecolectar.setEnabled(false);
+                } else if (optReali == Opcion.QUITAR) {
+                    this.fertilizantes.setEnabled(false);
+                    this.alimentos.setEnabled(false);
+                    this.btnQuitar.setEnabled(true);
+                    this.btnCosechar.setEnabled(false);
+                    this.btnLimpiar.setEnabled(false);
+                    this.btnDestazar.setEnabled(false);
+                    this.btnRecolectar.setEnabled(false);
+                } else if (optReali == Opcion.COSECHAR) {
+                    this.fertilizantes.setEnabled(false);
+                    this.alimentos.setEnabled(false);
+                    this.btnQuitar.setEnabled(false);
+                    this.btnCosechar.setEnabled(true);
+                    this.btnLimpiar.setEnabled(false);
+                    this.btnDestazar.setEnabled(false);
+                    this.btnRecolectar.setEnabled(false);
+                } else if (optReali == Opcion.LIMPIAR) {
+                    this.fertilizantes.setEnabled(false);
+                    this.alimentos.setEnabled(false);
+                    this.btnQuitar.setEnabled(false);
+                    this.btnCosechar.setEnabled(false);
+                    this.btnLimpiar.setEnabled(true);
+                    this.btnDestazar.setEnabled(false);
+                    this.btnRecolectar.setEnabled(false);
+                } else if (optReali == Opcion.DESTAZAR) {
+                    this.fertilizantes.setEnabled(false);
+                    this.alimentos.setEnabled(false);
+                    this.btnQuitar.setEnabled(false);
+                    this.btnCosechar.setEnabled(false);
+                    this.btnLimpiar.setEnabled(false);
+                    this.btnDestazar.setEnabled(true);
+                    this.btnRecolectar.setEnabled(false);
+                } else if (optReali == Opcion.RECOLECTAR) {
+                    this.fertilizantes.setEnabled(false);
+                    this.alimentos.setEnabled(false);
+                    this.btnQuitar.setEnabled(false);
+                    this.btnCosechar.setEnabled(false);
+                    this.btnLimpiar.setEnabled(false);
+                    this.btnDestazar.setEnabled(false);
+                    this.btnRecolectar.setEnabled(true);
                 } else {
                     this.optTierras.setEnabled(false);
                 }
@@ -721,7 +925,7 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
             this.actividades.setEnabled(false);
             this.optTierras.setEnabled(false);
         }
-    }
+    } 
     
     /**
      * Cuando el mouse entre en el area del JLabel de una tierra este cambiara de color,
@@ -770,16 +974,38 @@ public class Juego extends Frame implements MouseInputListener, ItemListener {
             this.item = item;
         }
 
-        public JMenuItemBag(String arg0) {
-            super(arg0);
-        }
-
-        public void setItem(PoseeMateria item) {
-            this.item = item;
-        }
-
         public PoseeMateria getItem() {
             return this.item;
+        }
+    }
+
+    public void isReadyBorder(int m, int n) {
+        if (this.tierras[m][n].getBorder() != this.bordReady
+                    && this.tierras[m][n].getBorder() != this.bordSelect) {
+            this.tierras[m][n].setBorder(this.bordReady);
+        }
+    }
+
+    public void isNotReadyBorder(int m, int n) {
+        if (this.tierras[m][n].getBorder() == this.bordReady) {
+            this.tierras[m][n].setBorder(this.normalBord);
+        }
+    }
+
+    public int getTierrasCompradas() {
+        return this.numTierrasCompradas;
+    }
+
+    public void refreshTexts() {
+        for (JLabel[] lbls : tierras) {
+            for (JLabel lbl : lbls) {
+                if (lbl.getText() != null && !lbl.getText().isBlank()) {
+                    if (lbl.getIcon() == Images.GRAMA_IMAGE
+                            || lbl.getIcon() == Images.AGUA_IMAGE) {
+                        lbl.setText("");
+                    }
+                }
+            }
         }
     }
 }

@@ -103,11 +103,11 @@ public class Images {
     private static final Image ARBOL_IM_IC = ARBOL_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
     public static final ImageIcon ARBOL_IMAGE = new ImageIcon(ARBOL_IM_IC);
 
-    private static final ImageIcon ARBOL_COSECHA_ICON = new ImageIcon("src\\com\\gui\\plantas\\images\\Arbol_Cosecha.png");
+    private static final ImageIcon ARBOL_COSECHA_ICON = new ImageIcon("src\\com\\gui\\images\\plantas\\Arbol_Cosecha.png");
     private static final Image ARBOL_COSECHA_IM_IC = ARBOL_COSECHA_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
     public static final ImageIcon ARBOL_COSECHA_IMAGE = new ImageIcon(ARBOL_COSECHA_IM_IC);
 
-    private static final ImageIcon ARBOL_PODRIDO_ICON = new ImageIcon("src\\com\\gui\\plantas\\images\\Arbol_Podrido.png");
+    private static final ImageIcon ARBOL_PODRIDO_ICON = new ImageIcon("src\\com\\gui\\images\\plantas\\Arbol_Podrido.png");
     private static final Image ARBOL_PODRIDO_IM_IC = ARBOL_PODRIDO_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
     public static final ImageIcon ARBOL_PODRIDO_IMAGE = new ImageIcon(ARBOL_PODRIDO_IM_IC);
 
@@ -169,7 +169,7 @@ public class Images {
     private static final Image GALLINA_IM_IC = GALLINA_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
     public static final ImageIcon GALLINA_IMAGE = new ImageIcon(GALLINA_IM_IC);
 
-    private static final ImageIcon VACA_MUERTO_ICON = new ImageIcon("src\\com\\gui\\images\\animales\\Vaca_Muerto.png");
+    private static final ImageIcon VACA_MUERTO_ICON = new ImageIcon("src\\com\\gui\\images\\animales\\Vaca_Muerta.png");
     private static final Image VACA_MUERTO_IM_IC = VACA_MUERTO_ICON.getImage().getScaledInstance(widthJuego, heightJuego, Image.SCALE_SMOOTH);
     public static final ImageIcon VACA_MUERTO_IMAGE = new ImageIcon(VACA_MUERTO_IM_IC);
 

@@ -7,6 +7,7 @@ import java.awt.event.*;
 
 import javax.imageio.ImageIO;
 import javax.management.InvalidAttributeValueException;
+import javax.naming.InsufficientResourcesException;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.MouseInputListener;
@@ -205,7 +206,7 @@ public class Tiega extends Frame implements MouseInputListener {
                 if (faltanPr >= 10) {
                     maxPr = 10;
                 } else if (faltanPr > 0) {
-                    maxPr = faltanPl;
+                    maxPr = faltanPr;
                 }
             }
         }
@@ -312,7 +313,12 @@ public class Tiega extends Frame implements MouseInputListener {
                     Granja.bob.addProducto(new Alimento((Alimento) (this.lblClicked)));
                 } else if (this.lblClicked instanceof Producto) {
                     Granja.bob.addProducto(new Producto((Producto) (this.lblClicked)));
-                } Granja.bob.setOro(this.lblClicked.getPrecio());
+                }
+                try {
+                    Granja.bob.setOro(this.lblClicked.getPrecio());
+                } catch (InsufficientResourcesException exec) {
+                    JOptionPane.showMessageDialog(this, this.pocoOro, "Oro insuficiente", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
                 JOptionPane.showMessageDialog(this, this.pocoOro, "Oro insuficiente", JOptionPane.ERROR_MESSAGE);
             } this.lblClicked = null;
@@ -344,7 +350,7 @@ public class Tiega extends Frame implements MouseInputListener {
             this.panelTienda.revalidate();
             this.panelTienda.repaint();
         }
-        // Boton para comprar en la bodega
+        // Boton para comer en la bodega
         if (e.getSource() == comerBtn) {
             int vidaAnterior = Granja.bob.getVida();
             try {

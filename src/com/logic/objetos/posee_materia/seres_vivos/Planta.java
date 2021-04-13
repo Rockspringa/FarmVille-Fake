@@ -45,10 +45,11 @@ public abstract class Planta implements SerVivo {
 
     @Override
     public void bajarVida() {
-        this.tiempoVivo++;
-        if (tiempoVivo > deadline) {
-            this.morir();
-        }
+        if (this.alive)
+            this.tiempoVivo++;
+            if (tiempoVivo > deadline) {
+                this.morir();
+            }
     }
 
     @Override
@@ -75,9 +76,9 @@ public abstract class Planta implements SerVivo {
 
     public boolean isCosechable() {
         return (this.isAlive())
-                    ? (this.cosechaTime < this.tiempoVivo &&
+                    ? ((this.cosechaTime < this.tiempoVivo &&
                             this.tiempoVivo < this.deadline)
-                                   ? true : false
+                                   ? true : false)
                     : false;
     }
 

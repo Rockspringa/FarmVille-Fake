@@ -1,5 +1,6 @@
 package com.logic.objetos.actividades;
 
+import javax.naming.InsufficientResourcesException;
 import javax.swing.*;
 
 import com.logic.Opcion;
@@ -80,7 +81,7 @@ public class Crianza extends Actividad {
     }
 
     @Override
-    public void terminarActividad(Granjero bob) {
+    public void terminarActividad(Granjero bob) throws InsufficientResourcesException {
         if (animal.isProductor() && animal.isDestazable()) {
             if (animal.isReadyToRecolect()) {
                 animal.getProductos();
@@ -91,7 +92,7 @@ public class Crianza extends Actividad {
             }
         } else if (animal.isDestazable() && animal.isReadyToDead()) {
             animal.morir();
-        } else if (animal.isProductor() && animal.isReadyToDead()) {
+        } else if (animal.isProductor() && animal.isReadyToRecolect()) {
             animal.getProductos();
         } else if (!animal.isAlive()) {
             this.limpiarCuerpo(bob);

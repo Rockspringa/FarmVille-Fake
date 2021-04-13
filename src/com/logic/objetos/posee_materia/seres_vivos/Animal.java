@@ -123,7 +123,7 @@ public class Animal implements SerVivo {
 
     public Animal(Animal oldAnimal) {
         this.cantProdDest = oldAnimal.cantProdDest;
-        this.produceDest =  oldAnimal.produceDest;
+        this.produceDest = oldAnimal.produceDest;
         this.porcentajeDest = oldAnimal.porcentajeDest;
         this.porcentajeProd = oldAnimal.porcentajeProd;
         this.cantProdProd = oldAnimal.cantProdProd;
